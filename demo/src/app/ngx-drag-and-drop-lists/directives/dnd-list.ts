@@ -21,7 +21,7 @@ export class DndList {
 
     private dragState: DndStateConfig;
     private nativeElement: HTMLElement;
-    private placeholder: Element = this.getPlaceholderElement();
+    private placeholder: Element;
     private listSettings: {} = {};
     constructor(
         private element: ElementRef,
@@ -29,6 +29,7 @@ export class DndList {
     ) {
         this.dragState = dndState.dragState;
         this.nativeElement = element.nativeElement;
+        this.placeholder = this.getPlaceholderElement();
     }
 
     @HostListener('dragenter', ['$event'])
