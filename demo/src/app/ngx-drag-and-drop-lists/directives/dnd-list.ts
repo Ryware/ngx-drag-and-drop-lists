@@ -13,7 +13,11 @@ import {
     selector: '[dndList]',
 })
 export class DndList {
-    @Input('dndList') public option: DndListSettings;
+    @Input('dndList') public option: DndListSettings = {
+        disabled: false,
+        effectAllowed: 'move',
+        allowedTypes: [],
+    };
     @Input('dndModel') public dndModel: any[];
     @Output('dndDragOver') public dndDragOver: EventEmitter<any> = new EventEmitter();
     @Output('dndDrop') public dndDrop: EventEmitter<any> = new EventEmitter();
@@ -35,7 +39,7 @@ export class DndList {
     @HostListener('dragenter', ['$event'])
     public handleDragEnter(event: DragEvent): boolean {
         event = event['originalEvent'] || event;
-
+        console.log('dragenter');
         let mimeType: string = this.getMimeType(event.dataTransfer.types);
         if (!mimeType || !this.isDropAllowed(this.getItemType(mimeType))) return true;
 
@@ -46,6 +50,7 @@ export class DndList {
     @HostListener('dragover', ['$event'])
     public handleDragOver(event: DragEvent): boolean {
         event = event['originalEvent'] || event;
+        console.log('dragover');
 
         let mimeType: string = this.getMimeType(event.dataTransfer.types);
         let itemType: string = this.getItemType(mimeType);
@@ -88,10 +93,10 @@ export class DndList {
 
         // At this point we invoke the callback, which still can disallow the drop.
         // We can't do this earlier because we want to pass the index of the placeholder.
-        if (this.dndDragOver &&
-            !this.invokeCallback(this.dndDragOver, event, dropEffect, itemType)) {
-            return this.stopDragOver();
-        }
+        // if (this.dndDragOver &&
+        //     !this.invokeCallback(this.dndDragOver, event, dropEffect, itemType)) {
+        //     return this.stopDragOver();
+        // }
 
         event.preventDefault();
         if (!ignoreDataTransfer) {
@@ -106,6 +111,8 @@ export class DndList {
     @HostListener('drop', ['$event'])
     public handleDrop(event: DragEvent): boolean {
         event = event['originalEvent'] || event;
+
+        console.log('drop');
 
         // Check whether the drop is allowed and determine mime type.
         let mimeType: string = this.getMimeType(event.dataTransfer.types);
@@ -139,7 +146,7 @@ export class DndList {
         // Invoke the callback, which can transform the transferredObject and even abort the drop.
         let index: number = this.getPlaceholderIndex();
         if (this.dndDrop) {
-            data = this.invokeCallback(this.dndDrop, event, dropEffect, itemType, index, data);
+            this.invokeCallback(this.dndDrop, event, dropEffect, itemType, index, data);
             if (!data) return this.stopDragOver();
         }
 
@@ -165,6 +172,7 @@ export class DndList {
     public handleDragLeave(event: DragEvent): void {
         event = event['originalEvent'] || event;
 
+        console.log('drag left');
         let newTarget: Element = document.elementFromPoint(event.clientX, event.clientY);
         if (this.nativeElement.contains(newTarget) && !event['_dndPhShown']) {
             // Signalize to potential parent lists that a placeholder is already shown.
@@ -182,7 +190,9 @@ export class DndList {
                 placeholder = child;
             }
         }
-        return placeholder || <any>'<li class="dndPlaceholder"></li>';
+        let placeholderDefault = document.createElement('li');
+        placeholderDefault.classList.add('dndPlaceholder');
+        return placeholder || placeholderDefault;
     }
 
     /**
@@ -256,6 +266,7 @@ export class DndList {
      * Small helper function that cleans up if we aborted a drop.
      */
     private stopDragOver(): boolean {
+        console.log('stopping drag');
         this.placeholder.remove();
         this.nativeElement.classList.remove('dndDragover');
         return true;

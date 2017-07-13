@@ -405,7 +405,7 @@
                 // Invoke the callback, which can transform the transferredObject and even abort the drop.
                 var index = getPlaceholderIndex();
                 if (attr.dndDrop) {
-                    data = invokeCallback(attr.dndDrop, event, dropEffect, itemType, index, data);
+                    invokeCallback(attr.dndDrop, event, dropEffect, itemType, index, data);
                     if (!data) return stopDragover();
                 }
 
@@ -447,7 +447,7 @@
                 }
             });
 
-           
+
 
             /**
              * Determines the type of the item from the dndState, or from the mime type for items from

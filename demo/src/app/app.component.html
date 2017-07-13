@@ -11,9 +11,12 @@
             <h3 class="panel-title">List {{i}}</h3>
           </div>
           <div class="panel-body">
-            <ul [dndList] [dndModel]="list">
-              <li *ngFor="let item of list" [dndDraggable]="{draggable:true, effectAllowed:'move'}" [dndObject]="item" (dndMoved)="log('moved')"
-                (dndSelected)="log('selected')" [class.selected]="models.selected === item">
+            <ul [dndList]="{
+        disabled: false,
+        effectAllowed: 'move',
+        allowedTypes: ['item']}" [dndModel]="list">
+              <li *ngFor="let item of list;let index = i" [dndType]="'item'" [dndDraggable]="{draggable:true, effectAllowed:'move'}" [dndObject]="item"
+                (dndMoved)="list.splice(i, 1)" (dndSelected)="log('selected')" [class.selected]="models.selected === item">
                 {{item.label}}
               </li>
             </ul>

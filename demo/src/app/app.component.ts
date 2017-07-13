@@ -1,9 +1,10 @@
-import { Component } from '@angular/core';
+import { Component, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.css'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class AppComponent {
   title = 'ngx-drag-and-drop-lists demo';
@@ -21,5 +22,9 @@ export class AppComponent {
 
   public log(text: string) {
     console.log(text);
+  }
+
+  public removeMovedItem(index: number, list: any[]) {
+    list.splice(index, 1);
   }
 }
