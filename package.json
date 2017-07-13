@@ -1,0 +1,47 @@
+{
+  "name": "ngx-drag-and-drop-lists",
+  "version": "1.0.0",
+  "description": "angular drag and drop component for lists",
+  "main": "index.js",
+  "scripts": {
+    "ngc": "ngc",
+    "build": "npm run ngc && node ./scripts/copy-package",
+    "publishPackage": "npm run build && cd dist && npm publish",
+    "dev": "tsc --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/misha130/ngx-drag-and-drop-lists.git"
+  },
+  "keywords": [
+    "drag-and-drop",
+    "angular2",
+    "angular4",
+    "alignment"
+  ],
+  "author": "Misha Tarnortusky",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/misha130/ngx-drag-and-drop-lists/issues"
+  },
+  "homepage": "https://github.com/misha130/ngx-drag-and-drop-lists#readme",
+  "dependencies": {
+
+  },
+  "devDependencies": {
+    "@angular/animations": "4.0.0",
+    "@angular/common": "4.0.0",
+    "@angular/compiler": "4.0.0",
+    "@angular/core": "4.0.0",
+    "@angular/forms": "4.0.0",
+    "@angular/http": "4.0.0",
+    "@angular/platform-browser": "4.0.0",
+    "@angular/platform-browser-dynamic": "4.0.0",
+    "@angular/router": "4.0.0",
+    "core-js": "^2.4.1",
+    "rxjs": "^5.1.0",
+    "zone.js": "^0.8.4",
+    "typescript": "~2.3.3",
+    "tslint": "^5.5.0"
+  }
+}

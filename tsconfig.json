@@ -1,0 +1,33 @@
+{
+    "compilerOptions": {
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "target": "es5",
+        "module": "es2015",
+        "moduleResolution": "node",
+        "removeComments": true,
+        "lib": [
+            "es2015",
+            "dom"
+        ],
+        "sourceMap": true,
+        "outDir": "dist",
+        "declarationDir": "dist",
+        "declaration": true
+    },
+    "compileOnSave": true,
+    "include": [
+        "src/**/*"
+    ],
+    "exclude": [
+        "demo",
+        "index.d.ts",
+        "node_modules",
+        "dist"
+    ],
+    "angularCompilerOptions": {
+        "genDir": "dist/",
+        "strictMetadataEmit": true,
+        "skipTemplateCodegen": true
+    }
+}
