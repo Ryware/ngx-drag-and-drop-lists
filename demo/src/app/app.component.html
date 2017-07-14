@@ -15,8 +15,8 @@
         disabled: false,
         effectAllowed: 'move',
         allowedTypes: ['item']}" [dndModel]="list">
-              <li *ngFor="let item of list;let index = i" [dndType]="'item'" [dndDraggable]="{draggable:true, effectAllowed:'move'}" [dndObject]="item"
-                (dndMoved)="list.splice(i, 1)" (dndSelected)="log('selected')" [class.selected]="models.selected === item">
+              <li *ngFor="let item of list;let i = index" [dndType]="'item'" [dndDraggable]="{draggable:true, effectAllowed:'move'}" [dndObject]="item"
+                (dndMoved)="removeMovedItem(i, list)" (dndSelected)="log('selected')" [class.selected]="models.selected === item">
                 {{item.label}}
               </li>
             </ul>

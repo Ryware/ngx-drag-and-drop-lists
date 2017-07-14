@@ -25,6 +25,7 @@ export class AppComponent {
   }
 
   public removeMovedItem(index: number, list: any[]) {
+    console.log(list, index);
     list.splice(index, 1);
   }
 }
