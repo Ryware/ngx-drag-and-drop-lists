@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
-import { DndDraggable, DndState, DndHandle, DndList, DndNoDrag } from '../index';
+import { DndDraggable, DndHandle, DndList, DndNoDrag } from '../directives';
+import { DndState } from '../services';
 import { CommonModule } from '@angular/common';
 
 @NgModule({

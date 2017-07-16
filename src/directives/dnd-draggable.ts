@@ -1,6 +1,6 @@
 import { Directive, Input, Output, ElementRef, HostListener, EventEmitter } from '@angular/core';
+import { DndState } from '../services';
 import {
-    DndState,
     DndDraggableConfig,
     DndStateConfig,
     ALL_EFFECTS,
@@ -16,8 +16,9 @@ export class DndDraggable {
     @Input('dndType') public dndType: string;
     @Input('dndObject') public dndObject: HTMLElement;
     @Input('dndDragDisabled') public set disableDrag(disable: string | boolean) {
-        if (disable !== undefined)
-            this.nativeElement.setAttribute(this.draggableString, disable.toString());
+        if (disable !== undefined) {
+            this.nativeElement.setAttribute(this.draggableString, (!disable).toString());
+        }
     }
 
     @Output('dndDragStart') public dndDragStart: EventEmitter<any> = new EventEmitter();
@@ -30,7 +31,7 @@ export class DndDraggable {
 
     private dragState: DndStateConfig;
     private nativeElement: HTMLElement;
-    private draggableString: string = 'draggable';
+    private draggableString = 'draggable';
     constructor(
         private element: ElementRef,
         private dndState: DndState,

@@ -19,14 +19,17 @@ export class DndList {
         allowedTypes: [],
     };
     @Input('dndModel') public dndModel: any[];
+    @Input() public set dndPlaceholder(placeholder: Element) {
+        this.placeholder = placeholder;
+        placeholder.remove();
+    }
     @Output('dndDragOver') public dndDragOver: EventEmitter<any> = new EventEmitter();
     @Output('dndDrop') public dndDrop: EventEmitter<any> = new EventEmitter();
     @Output('dndInserted') public dndInserted: EventEmitter<any> = new EventEmitter();
-
     private dragState: DndStateConfig;
     private nativeElement: HTMLElement;
-    private placeholder: Element;
     private listSettings: {} = {};
+    private placeholder: Element;
     constructor(
         private element: ElementRef,
         private dndState: DndState,
@@ -40,8 +43,10 @@ export class DndList {
     public handleDragEnter(event: DragEvent): boolean {
         event = event['originalEvent'] || event;
         console.log('dragenter');
-        let mimeType: string = this.getMimeType(event.dataTransfer.types);
-        if (!mimeType || !this.isDropAllowed(this.getItemType(mimeType))) return true;
+        const mimeType: string = this.getMimeType(event.dataTransfer.types);
+        if (!mimeType || !this.isDropAllowed(this.getItemType(mimeType))) {
+            return true;
+        }
 
         event.preventDefault();
         return false;
@@ -52,9 +57,11 @@ export class DndList {
         event = event['originalEvent'] || event;
         console.log('dragover');
 
-        let mimeType: string = this.getMimeType(event.dataTransfer.types);
-        let itemType: string = this.getItemType(mimeType);
-        if (!mimeType || !this.isDropAllowed(itemType)) return true;
+        const mimeType: string = this.getMimeType(event.dataTransfer.types);
+        const itemType: string = this.getItemType(mimeType);
+        if (!mimeType || !this.isDropAllowed(itemType)) {
+            return true;
+        }
 
         // Make sure the placeholder is shown, which is especially important if the list is empty.
         if (this.placeholder.parentNode !== this.nativeElement) {
@@ -69,10 +76,10 @@ export class DndList {
             }
 
             if (listItemNode.parentNode === this.nativeElement && listItemNode !== this.placeholder) {
-                let isFirstHalf: boolean = undefined;
+                let isFirstHalf: boolean;
                 // If the mouse pointer is in the upper half of the list item element,
                 // we position the placeholder before the list item, otherwise after it.
-                let rect: ClientRect = (listItemNode as Element).getBoundingClientRect();
+                const rect: ClientRect = (listItemNode as Element).getBoundingClientRect();
                 if (this.option.horizontal) {
                     isFirstHalf = event.clientX < rect.left + rect.width / 2;
                 } else {

@@ -3,8 +3,7 @@ import {
     DndState,
     DndDraggableConfig,
     DndStateConfig,
-
-} from '../index';
+} from '../services';
 @Directive({
     selector: '[dndHandle]',
 })
@@ -30,7 +29,7 @@ export class DndHandle {
 
     }
 
-    @HostListener('dragstart dragend', ['$event'])
+    @HostListener('dragstart', ['$event'])
     public handleDragStart(event: DragEvent): void {
         event = event['originalEvent'] || event;
         event['_dndHandle'] = true;

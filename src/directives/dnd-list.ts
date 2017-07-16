@@ -8,35 +8,45 @@ import {
     MIME_TYPE,
     EDGE_MIME_TYPE,
     MSIE_MIME_TYPE,
-} from '../index';
+} from '../services';
 @Directive({
     selector: '[dndList]',
 })
 export class DndList {
-    @Input('dndList') public option: DndListSettings;
+    @Input('dndList') public option: DndListSettings = {
+        disabled: false,
+        effectAllowed: 'move',
+        allowedTypes: [],
+    };
     @Input('dndModel') public dndModel: any[];
+    @Input() public set dndPlaceholder(placeholder: Element) {
+        this.placeholder = placeholder;
+        placeholder.remove();
+    }
     @Output('dndDragOver') public dndDragOver: EventEmitter<any> = new EventEmitter();
     @Output('dndDrop') public dndDrop: EventEmitter<any> = new EventEmitter();
     @Output('dndInserted') public dndInserted: EventEmitter<any> = new EventEmitter();
-
     private dragState: DndStateConfig;
     private nativeElement: HTMLElement;
-    private placeholder: Element = this.getPlaceholderElement();
     private listSettings: {} = {};
+    private placeholder: Element;
     constructor(
         private element: ElementRef,
         private dndState: DndState,
     ) {
         this.dragState = dndState.dragState;
         this.nativeElement = element.nativeElement;
+        this.placeholder = this.getPlaceholderElement();
     }
 
     @HostListener('dragenter', ['$event'])
     public handleDragEnter(event: DragEvent): boolean {
         event = event['originalEvent'] || event;
-
-        let mimeType: string = this.getMimeType(event.dataTransfer.types);
-        if (!mimeType || !this.isDropAllowed(this.getItemType(mimeType))) return true;
+        console.log('dragenter');
+        const mimeType: string = this.getMimeType(event.dataTransfer.types);
+        if (!mimeType || !this.isDropAllowed(this.getItemType(mimeType))) {
+            return true;
+        }
 
         event.preventDefault();
         return false;
@@ -45,10 +55,13 @@ export class DndList {
     @HostListener('dragover', ['$event'])
     public handleDragOver(event: DragEvent): boolean {
         event = event['originalEvent'] || event;
+        console.log('dragover');
 
-        let mimeType: string = this.getMimeType(event.dataTransfer.types);
-        let itemType: string = this.getItemType(mimeType);
-        if (!mimeType || !this.isDropAllowed(itemType)) return true;
+        const mimeType: string = this.getMimeType(event.dataTransfer.types);
+        const itemType: string = this.getItemType(mimeType);
+        if (!mimeType || !this.isDropAllowed(itemType)) {
+            return true;
+        }
 
         // Make sure the placeholder is shown, which is especially important if the list is empty.
         if (this.placeholder.parentNode !== this.nativeElement) {
@@ -63,10 +76,10 @@ export class DndList {
             }
 
             if (listItemNode.parentNode === this.nativeElement && listItemNode !== this.placeholder) {
-                let isFirstHalf: boolean = undefined;
+                let isFirstHalf: boolean;
                 // If the mouse pointer is in the upper half of the list item element,
                 // we position the placeholder before the list item, otherwise after it.
-                let rect: ClientRect = (listItemNode as Element).getBoundingClientRect();
+                const rect: ClientRect = (listItemNode as Element).getBoundingClientRect();
                 if (this.option.horizontal) {
                     isFirstHalf = event.clientX < rect.left + rect.width / 2;
                 } else {
@@ -87,10 +100,10 @@ export class DndList {
 
         // At this point we invoke the callback, which still can disallow the drop.
         // We can't do this earlier because we want to pass the index of the placeholder.
-        if (this.dndDragOver &&
-            !this.invokeCallback(this.dndDragOver, event, dropEffect, itemType)) {
-            return this.stopDragOver();
-        }
+        // if (this.dndDragOver &&
+        //     !this.invokeCallback(this.dndDragOver, event, dropEffect, itemType)) {
+        //     return this.stopDragOver();
+        // }
 
         event.preventDefault();
         if (!ignoreDataTransfer) {
@@ -105,6 +118,8 @@ export class DndList {
     @HostListener('drop', ['$event'])
     public handleDrop(event: DragEvent): boolean {
         event = event['originalEvent'] || event;
+
+        console.log('drop');
 
         // Check whether the drop is allowed and determine mime type.
         let mimeType: string = this.getMimeType(event.dataTransfer.types);
@@ -138,7 +153,7 @@ export class DndList {
         // Invoke the callback, which can transform the transferredObject and even abort the drop.
         let index: number = this.getPlaceholderIndex();
         if (this.dndDrop) {
-            data = this.invokeCallback(this.dndDrop, event, dropEffect, itemType, index, data);
+            this.invokeCallback(this.dndDrop, event, dropEffect, itemType, index, data);
             if (!data) return this.stopDragOver();
         }
 
@@ -164,6 +179,7 @@ export class DndList {
     public handleDragLeave(event: DragEvent): void {
         event = event['originalEvent'] || event;
 
+        console.log('drag left');
         let newTarget: Element = document.elementFromPoint(event.clientX, event.clientY);
         if (this.nativeElement.contains(newTarget) && !event['_dndPhShown']) {
             // Signalize to potential parent lists that a placeholder is already shown.
@@ -181,7 +197,9 @@ export class DndList {
                 placeholder = child;
             }
         }
-        return placeholder || <any>'<li class="dndPlaceholder"></li>';
+        let placeholderDefault = document.createElement('li');
+        placeholderDefault.classList.add('dndPlaceholder');
+        return placeholder || placeholderDefault;
     }
 
     /**
@@ -255,6 +273,7 @@ export class DndList {
      * Small helper function that cleans up if we aborted a drop.
      */
     private stopDragOver(): boolean {
+        console.log('stopping drag');
         this.placeholder.remove();
         this.nativeElement.classList.remove('dndDragover');
         return true;

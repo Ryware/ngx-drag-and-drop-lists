@@ -18,7 +18,7 @@ import {
 export class DndHandle {
     private dragState: DndStateConfig;
     private nativeElement: HTMLElement;
-    private draggableString: string = 'draggable';
+    private draggableString = 'draggable';
     constructor(
         private element: ElementRef,
         private dndState: DndState,
@@ -29,7 +29,7 @@ export class DndHandle {
 
     }
 
-    @HostListener('dragstart dragend', ['$event'])
+    @HostListener('dragstart', ['$event'])
     public handleDragStart(event: DragEvent): void {
         event = event['originalEvent'] || event;
         event['_dndHandle'] = true;

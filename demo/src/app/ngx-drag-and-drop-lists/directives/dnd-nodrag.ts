@@ -5,7 +5,7 @@ import {
     DndStateConfig,
 } from '../services';
 @Directive({
-    selector: '[dndList]',
+    selector: '[dndNoDrag]',
 })
 /**
  * Use the dnd-nodrag attribute inside of dnd-draggable elements to prevent them from starting

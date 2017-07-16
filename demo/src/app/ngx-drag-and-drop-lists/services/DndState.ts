@@ -13,7 +13,9 @@ export class DndState {
      * Filters an array of drop effects using a HTML5 effectAllowed string.
      */
     public filterEffects(effects: string[], effectAllowed: string) {
-        if (effectAllowed === 'all') return effects;
+        if (effectAllowed === 'all') {
+            return effects;
+        }
         return effects.filter((effect) => {
             return effectAllowed.toLowerCase().indexOf(effect) !== -1;
         });
