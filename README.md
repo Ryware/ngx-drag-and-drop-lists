@@ -18,7 +18,7 @@ This is only a version of it for Angular2/4
 
 * `dndObject` Required attribute. Represents the object that is actually dragged, the data.
 
-* `dndType` Tells what is the type of the data
+* `dndType`  Required attribute. Tells what is the type of the data
 
 * `dndDragDisabled` Tells whether the drag ability is disabled or not
 

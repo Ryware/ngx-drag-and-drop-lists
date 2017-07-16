@@ -42,7 +42,6 @@ export class DndList {
     @HostListener('dragenter', ['$event'])
     public handleDragEnter(event: DragEvent): boolean {
         event = event['originalEvent'] || event;
-        console.log('dragenter');
         const mimeType: string = this.getMimeType(event.dataTransfer.types);
         if (!mimeType || !this.isDropAllowed(this.getItemType(mimeType))) {
             return true;
@@ -55,7 +54,6 @@ export class DndList {
     @HostListener('dragover', ['$event'])
     public handleDragOver(event: DragEvent): boolean {
         event = event['originalEvent'] || event;
-        console.log('dragover');
 
         const mimeType: string = this.getMimeType(event.dataTransfer.types);
         const itemType: string = this.getItemType(mimeType);
@@ -119,8 +117,6 @@ export class DndList {
     public handleDrop(event: DragEvent): boolean {
         event = event['originalEvent'] || event;
 
-        console.log('drop');
-
         // Check whether the drop is allowed and determine mime type.
         let mimeType: string = this.getMimeType(event.dataTransfer.types);
         let itemType: string = this.getItemType(mimeType);
@@ -179,7 +175,6 @@ export class DndList {
     public handleDragLeave(event: DragEvent): void {
         event = event['originalEvent'] || event;
 
-        console.log('drag left');
         let newTarget: Element = document.elementFromPoint(event.clientX, event.clientY);
         if (this.nativeElement.contains(newTarget) && !event['_dndPhShown']) {
             // Signalize to potential parent lists that a placeholder is already shown.
@@ -197,7 +192,7 @@ export class DndList {
                 placeholder = child;
             }
         }
-        let placeholderDefault = document.createElement('li');
+        let placeholderDefault: Element = document.createElement('li');
         placeholderDefault.classList.add('dndPlaceholder');
         return placeholder || placeholderDefault;
     }
@@ -273,7 +268,6 @@ export class DndList {
      * Small helper function that cleans up if we aborted a drop.
      */
     private stopDragOver(): boolean {
-        console.log('stopping drag');
         this.placeholder.remove();
         this.nativeElement.classList.remove('dndDragover');
         return true;
