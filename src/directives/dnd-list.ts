@@ -186,10 +186,12 @@ export class DndList {
 
     private getPlaceholderElement(): Element {
         let placeholder: Element = undefined;
-        for (let i: number = 1; i < this.nativeElement.children.length; i++) {
-            let child: Element = this.nativeElement.children.item(i);
-            if (child.classList.contains('dndPlaceholder')) {
-                placeholder = child;
+        if (this.nativeElement.children) {
+            for (let i: number = 1; i < this.nativeElement.children.length; i++) {
+                let child: Element = this.nativeElement.children.item(i);
+                if (child.classList.contains('dndPlaceholder')) {
+                    placeholder = child;
+                }
             }
         }
         let placeholderDefault: Element = document.createElement('li');
