@@ -95,7 +95,7 @@
 
     <!-- This template is responsible for rendering a container element. It uses
      the above list template to render each container column -->
-    <div class="container-element box box-blue">
+    <!-- <div class="container-element box box-blue">
       <h3>Container {{item.id}}</h3>
       <div class="column"
         *ngFor="let list of item.columns">
@@ -106,13 +106,13 @@
             [dndDraggable]="{draggable:true, effectAllowed:'move'}"
             (dndMoved)="list.splice($index, 1)"
             (dndSelected)="nested.selected = item"
-            [class.selected]="nested.selected === item}">
+            [class.selected]="nested.selected === item">
             <div class="item">Item {{item.id}}</div>
           </li>
         </ul>
       </div>
       <div class="clearfix"></div>
-    </div>
+    </div> -->
 
 
     <!-- Main area with dropzones and source code -->
