@@ -10,7 +10,7 @@ import {
     moveAccepted,
 } from '../index';
 import { Subscription } from 'rxjs/Subscription';
-import { dropAccepted } from './dnd-list';
+import { dropAccepted, activeListSource } from './dnd-list';
 @Directive({
     selector: '[dndDraggable]',
 })
@@ -36,6 +36,7 @@ export class DndDraggable implements OnInit, OnDestroy {
     private dropSubscription: Subscription;
     private nativeElement: HTMLElement;
     private draggableString: string = 'draggable';
+    public static latestDrag: any = undefined;
     constructor(
         private element: ElementRef,
         private dndState: DndState,
@@ -66,7 +67,7 @@ export class DndDraggable implements OnInit, OnDestroy {
     }
 
     public ngOnDestroy(): void {
-        this.dropSubscription.unsubscribe;
+        this.dropSubscription.unsubscribe();
     }
 
     @HostListener('dragstart', ['$event'])
@@ -108,6 +109,10 @@ export class DndDraggable implements OnInit, OnDestroy {
         setTimeout(
             (() => this.nativeElement.style.display = 'none'));
 
+        // set latest drag
+        DndDraggable.latestDrag = this.dndObject;
+        activeListSource.next((this.nativeElement as HTMLElement).parentElement);
+
         // Try setting a proper drag image if triggered on a dnd-handle (won't work in IE).
         if ((<any>event)._dndHandle && event.dataTransfer.setDragImage) {
             event.dataTransfer.setDragImage(this.nativeElement, 0, 0);
@@ -124,7 +129,7 @@ export class DndDraggable implements OnInit, OnDestroy {
         this.nativeElement.classList.remove('dndDragging');
         this.nativeElement.style.display = 'block';
         event.stopPropagation();
-
+        DndDraggable.latestDrag = undefined;
         // In IE9 it is possible that the timeout from dragstart triggers after the dragend handler.
         setTimeout((() => this.nativeElement.classList.remove('dndDraggingSource')), 0);
     }

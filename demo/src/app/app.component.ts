@@ -21,6 +21,7 @@ export class AppComponent {
     ]
   ];
 
+
   public typedList = [
     [
       { 'name': 'John', 'type': 'male' },

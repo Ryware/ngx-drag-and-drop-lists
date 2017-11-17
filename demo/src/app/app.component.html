@@ -20,8 +20,7 @@
         class="col-md-12"
         [dndType]="'item'"
         [dndDraggable]="{draggable:true, effectAllowed:'move'}"
-        [dndObject]="item"
-        (dndSelected)="log('selected')">{{item.name}}</div>
+        [dndObject]="item">{{item.name}}</div>
     </div>
     <div class="col-md-6"
       [dndList]="{
@@ -34,8 +33,7 @@
         class="col-md-12"
         [dndType]="'item'"
         [dndDraggable]="{draggable:true, effectAllowed:'move'}"
-        [dndObject]="item"
-        (dndSelected)="log('selected')">{{item.name}}</div>
+        [dndObject]="item">{{item.name}}</div>
     </div>
   </div>
 
@@ -55,8 +53,7 @@
           class="col-md-12"
           [dndType]="item.type"
           [dndDraggable]="{draggable:true, effectAllowed:'move'}"
-          [dndObject]="item"
-          (dndSelected)="log('selected')">{{item.name}}</div>
+          [dndObject]="item">{{item.name}}</div>
       </div>
     </div>
     <div class="col-md-4">
@@ -71,8 +68,7 @@
           class="col-md-12"
           [dndType]="item.type"
           [dndDraggable]="{draggable:true, effectAllowed:'move'}"
-          [dndObject]="item"
-          (dndSelected)="log('selected')">{{item.name}}</div>
+          [dndObject]="item">{{item.name}}</div>
       </div>
     </div>
 
@@ -88,8 +84,7 @@
           class="col-md-12"
           [dndType]="item.type"
           [dndDraggable]="{draggable:true, effectAllowed:'move'}"
-          [dndObject]="item"
-          (dndSelected)="log('selected')">{{item.name}}</div>
+          [dndObject]="item">{{item.name}}</div>
       </div>
     </div>
   </div>
