@@ -39,6 +39,8 @@
     "@angular/platform-browser-dynamic": "4.2.6",
     "@angular/platform-server": "4.2.6",
     "@angular/router": "4.2.6",
+    "connect": "^3.6.5",
+    "serve-static": "^1.13.1",
     "core-js": "^2.4.1",
     "rxjs": "^5.1.0",
     "tslint": "^5.5.0",
