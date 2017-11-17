@@ -61,7 +61,6 @@ export class DndList implements OnInit, OnDestroy {
         });
         this.sourceSubscription = activeListSource.subscribe((element: HTMLElement) => {
             if (this.nativeElement === element) {
-                console.log(element);
                 DndList.latestListSource = this.dndModel;
             }
         });
@@ -308,7 +307,6 @@ export class DndList implements OnInit, OnDestroy {
     private stopDragOver(): boolean {
         this.placeholder.remove();
         this.nativeElement.classList.remove('dndDragover');
-        DndList.latestListSource = undefined;
         return true;
     }
 
