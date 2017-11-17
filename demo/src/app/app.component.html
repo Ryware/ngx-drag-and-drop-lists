@@ -1,172 +1,98 @@
-<h1>Demo: Simple Lists</h1>
-
-
-<div class="simpleDemo row">
-
-  <div class="col-md-8">
-    <div class="row">
-      <div *ngFor="let list of models.lists;let i = index"
-        class="col-md-6">
-        <div class="panel panel-info">
-          <div class="panel-heading">
-            <h3 class="panel-title">List {{i}}</h3>
-          </div>
-          <div class="panel-body">
-            <ul [dndList]="{
-        disabled: false,
-        effectAllowed: 'move',
-        allowedTypes: ['item']}"
-              [dndModel]="list">
-              <li *ngFor="let item of list;let i = index"
-                [dndType]="'item'"
-                [dndDraggable]="{draggable:true, effectAllowed:'move'}"
-                [dndObject]="item"
-                (dndMoved)="removeMovedItem(i, list)"
-                (dndSelected)="log('selected')"
-                [class.selected]="models.selected === item">
-                {{item.label}}
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </div>
-
+<div class="container">
+  <div class="dndPlaceholder col-md-12"
+    #placeholder></div>
+  <div class="page-header">
+    <h1>Ngx-drag-and-drop-lists Demo</h1>
+    <p class="lead">Drag and drop </p>
   </div>
 
-  <h1>Demo: Typed Lists</h1>
+  <h3>Simple Drag and Drop</h3>
 
+  <div class="row">
+    <div class="col-md-6"
+      [dndList]="{
+      disabled: false,
+      effectAllowed: 'move',
+      allowedTypes: ['item']}"
+      [dndPlaceholder]="placeholder"
+      [dndModel]="simpleList[0]">
+      <div *ngFor="let item of simpleList[0]"
+        class="col-md-12"
+        [dndType]="'item'"
+        [dndDraggable]="{draggable:true, effectAllowed:'move'}"
+        [dndObject]="item"
+        (dndSelected)="log('selected')">{{item.name}}</div>
+    </div>
+    <div class="col-md-6"
+      [dndList]="{
+      disabled: false,
+      effectAllowed: 'move',
+      allowedTypes: ['item']}"
+      [dndModel]="simpleList[1]"
+      [dndPlaceholder]="placeholder">
+      <div *ngFor="let item of simpleList[1]"
+        class="col-md-12"
+        [dndType]="'item'"
+        [dndDraggable]="{draggable:true, effectAllowed:'move'}"
+        [dndObject]="item"
+        (dndSelected)="log('selected')">{{item.name}}</div>
+    </div>
+  </div>
 
-  <div class="typesDemo row">
+  <h3>Typed Drag and Drop</h3>
 
-    <div *ngFor="let list of typedLists"
-      class="col-md-4">
-      <div class="panel panel-info">
-        <div class="panel-heading">
-          <h3 class="panel-title">List of {{list.label}} (max. {{list.max}})</h3>
-        </div>
-        <div class="panel-body">
-          <ul [dndList]="{
-        disabled: list.people.length >= list.max,
+  <div class="row">
+    <div class="col-md-4">
+      <h4>Only males</h4>
+      <div [dndList]="{
+        disabled: false,
         effectAllowed: 'move',
-        allowedTypes: list.allowedTypes}"
-            [dndPlaceholder]="placeholder"
-            [dndModel]="list.people">
+        allowedTypes: ['male']}"
+        [dndPlaceholder]="placeholder"
+        [dndModel]="typedList[0]">
 
-            <li *ngFor="let person of list.people;let i = index"
-              [dndType]="person.type"
-              [dndDraggable]="{draggable:true, effectAllowed:'move'}"
-              [dndObject]="person"
-              [dndDragDisabled]="person.type == 'unknown'"
-              (dndMoved)="removeMovedItem(i, list.people)"
-              class="background-{{person.type}}">
-              <div dndNoDrag>
-                <div dndHandle
-                  class="handle">:::</div>
-                <div class="name">
-                  <input type="text"
-                    readonly="readonly"
-                    [value]="person.name"
-                    class="background-{{person.type}} form-control input-sm">
-                </div>
-              </div>
-            </li>
-
-            <li #placeholder
-              class="dndPlaceholder">
-              Drop any <strong>{{list.allowedTypes.join(' or ')}}</strong> here
-            </li>
-
-          </ul>
-        </div>
+        <div *ngFor="let item of typedList[0]"
+          class="col-md-12"
+          [dndType]="item.type"
+          [dndDraggable]="{draggable:true, effectAllowed:'move'}"
+          [dndObject]="item"
+          (dndSelected)="log('selected')">{{item.name}}</div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <h4>Only females</h4>
+      <div [dndList]="{
+        disabled: false,
+        effectAllowed: 'move',
+        allowedTypes: ['female']}"
+        [dndModel]="typedList[1]"
+        [dndPlaceholder]="placeholder">
+        <div *ngFor="let item of typedList[1]"
+          class="col-md-12"
+          [dndType]="item.type"
+          [dndDraggable]="{draggable:true, effectAllowed:'move'}"
+          [dndObject]="item"
+          (dndSelected)="log('selected')">{{item.name}}</div>
       </div>
     </div>
 
-
-    <h1>Demo: Nested Lists</h1>
-
-
-    <!-- Markup for lists inside the dropzone. It's inside a seperate template
-     because it will be used recursively. The dnd-list directive enables
-     to drop elements into the referenced array. The dnd-draggable directive
-     makes an element draggable and will transfer the object that was
-     assigned to it. If an element was dragged away, you have to remove
-     it from the original list yourself using the dnd-moved attribute -->
-
-    <!-- This template is responsible for rendering a container element. It uses
-     the above list template to render each container column -->
-    <!-- <div class="container-element box box-blue">
-      <h3>Container {{item.id}}</h3>
-      <div class="column"
-        *ngFor="let list of item.columns">
-        <ul [dndModel]="list"
-          [dndList]>
-          <li *ngFor="let item of list"
-            [dndObject]="item"
-            [dndDraggable]="{draggable:true, effectAllowed:'move'}"
-            (dndMoved)="list.splice($index, 1)"
-            (dndSelected)="nested.selected = item"
-            [class.selected]="nested.selected === item">
-            <div class="item">Item {{item.id}}</div>
-          </li>
-        </ul>
+    <div class="col-md-4">
+      <h4>People</h4>
+      <div [dndList]="{
+      disabled: false,
+      effectAllowed: 'move',
+      allowedTypes: ['male','female']}"
+        [dndModel]="typedList[2]"
+        [dndPlaceholder]="placeholder">
+        <div *ngFor="let item of typedList[2]"
+          class="col-md-12"
+          [dndType]="item.type"
+          [dndDraggable]="{draggable:true, effectAllowed:'move'}"
+          [dndObject]="item"
+          (dndSelected)="log('selected')">{{item.name}}</div>
       </div>
-      <div class="clearfix"></div>
-    </div> -->
-
-
-    <!-- Main area with dropzones and source code -->
-    <div class="col-md-10">
-      <div class="row">
-        <div *ngFor="let zone of nested.dropzones;let i = index"
-          class="col-md-6">
-          <div class="dropzone box box-yellow">
-            <!-- The dropzone also uses the list template -->
-            <h3>Dropzone {{i}}</h3>
-            <div ng-include="'list.html'"></div>
-          </div>
-        </div>
-      </div>
-
-      <div view-source="nested"></div>
     </div>
+  </div>
 
-    <!-- Sidebar -->
-    <div class="col-md-2">
-
-      <div class="toolbox box box-grey box-padding">
-        <h3>New Elements</h3>
-        <ul>
-          <!-- The toolbox only allows to copy objects, not move it. After a new
-                 element was created, dnd-copied is invoked and we generate the next id -->
-          <li *ngFor="let item of nested.templates"
-            [dndObject]="item"
-            [dndDraggable]="{draggable:true, effectAllowed:'copy'}"
-            (dndCopied)="item.id = item.id + 1">
-            <button type="button"
-              class="btn btn-default btn-lg"
-              disabled="disabled">{{item.type}}</button>
-          </li>
-        </ul>
-      </div>
-
-      <div *ngIf="nested.selected"
-        class="box box-grey box-padding">
-        <h3>Selected</h3>
-        <strong>Type: </strong> {{nested.selected.type}}<br>
-        <input type="text"
-          [value]="nested.selected.id"
-          class="form-control"
-          style="margin-top: 5px" />
-      </div>
-
-      <div class="trashcan box box-grey box-padding">
-        <!-- If you use [] as referenced list, the dropped elements will be lost -->
-        <h3>Trashcan</h3>
-        <ul [dndList]
-          [dndModel]="[]">
-          <li></li>
-        </ul>
-      </div>
-
-    </div>
+</div>
+<!-- /container -->

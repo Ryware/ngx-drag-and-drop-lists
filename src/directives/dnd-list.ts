@@ -1,4 +1,4 @@
-import { Directive, Input, Output, ElementRef, HostListener, EventEmitter } from '@angular/core';
+import { Directive, Input, OnDestroy, OnInit, Output, ElementRef, HostListener, EventEmitter } from '@angular/core';
 import {
     DndState,
     DndDraggableConfig,
@@ -9,10 +9,16 @@ import {
     EDGE_MIME_TYPE,
     MSIE_MIME_TYPE,
 } from '../services';
+import { Subject } from 'rxjs/Subject';
+import { Subscription } from 'rxjs/Subscription';
+
+export const dropAccepted: Subject<any> = new Subject();
+export const moveAccepted: Subject<any> = new Subject();
+
 @Directive({
     selector: '[dndList]',
 })
-export class DndList {
+export class DndList implements OnInit, OnDestroy {
     @Input('dndList') public option: DndListSettings = {
         disabled: false,
         effectAllowed: 'move',
@@ -30,6 +36,7 @@ export class DndList {
     private nativeElement: HTMLElement;
     private listSettings: {} = {};
     private placeholder: Element;
+    private moveSubscription: Subscription;
     constructor(
         private element: ElementRef,
         private dndState: DndState,
@@ -37,6 +44,20 @@ export class DndList {
         this.dragState = dndState.dragState;
         this.nativeElement = element.nativeElement;
         this.placeholder = this.getPlaceholderElement();
+    }
+
+    public ngOnInit(): void {
+        this.moveSubscription = moveAccepted.subscribe(({ item, list }) => {
+            if (list !== this.dndModel) {
+                let itemIndex: number = this.dndModel.findIndex(modelItem => JSON.stringify(modelItem) === JSON.stringify(item));
+                if (itemIndex === -1) return;
+                this.dndModel.splice(itemIndex, 1);
+            }
+        });
+    }
+
+    public ngOnDestroy(): void {
+        this.moveSubscription.unsubscribe;
     }
 
     @HostListener('dragenter', ['$event'])
@@ -164,6 +185,9 @@ export class DndList {
             this.dndModel.splice(index, 0, data);
         }
         this.invokeCallback(this.dndInserted, event, dropEffect, itemType, index, data);
+
+        // Tell old object to handle itself
+        dropAccepted.next({ item: data, list: this.dndModel });
 
         // Clean up
         this.stopDragOver();

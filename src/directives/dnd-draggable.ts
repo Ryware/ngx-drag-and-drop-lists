@@ -1,4 +1,4 @@
-import { Directive, Input, Output, ElementRef, HostListener, EventEmitter } from '@angular/core';
+import { Directive, Input, Output, OnDestroy, OnInit, ElementRef, HostListener, EventEmitter } from '@angular/core';
 import { DndState } from '../services';
 import {
     DndDraggableConfig,
@@ -7,11 +7,14 @@ import {
     MIME_TYPE,
     EDGE_MIME_TYPE,
     MSIE_MIME_TYPE,
+    moveAccepted,
 } from '../index';
+import { Subscription } from 'rxjs/Subscription';
+import { dropAccepted } from './dnd-list';
 @Directive({
     selector: '[dndDraggable]',
 })
-export class DndDraggable {
+export class DndDraggable implements OnInit, OnDestroy {
     @Input('dndDraggable') public option: DndDraggableConfig;
     @Input('dndType') public dndType: string;
     @Input('dndObject') public dndObject: HTMLElement;
@@ -30,8 +33,9 @@ export class DndDraggable {
     @Output('dndSelected') public dndSelected: EventEmitter<any> = new EventEmitter();
 
     private dragState: DndStateConfig;
+    private dropSubscription: Subscription;
     private nativeElement: HTMLElement;
-    private draggableString = 'draggable';
+    private draggableString: string = 'draggable';
     constructor(
         private element: ElementRef,
         private dndState: DndState,
@@ -45,6 +49,24 @@ export class DndDraggable {
         this.nativeElement.onselectstart = function (): void {
             if (this.dragDrop) this.dragDrop();
         };
+    }
+
+    public ngOnInit(): void {
+        this.dropSubscription = dropAccepted.subscribe(({ item, list }) => {
+            // event = event['originalEvent'] || event;
+            if (JSON.stringify(this.dndObject) === JSON.stringify(item)) {
+                let cb: object = { copy: 'dndCopied', link: 'dndLinked', move: 'dndMoved', none: 'dndCanceled' };
+                (this[cb[this.dragState.effectAllowed]] as EventEmitter<any>).emit();
+                if (this.dragState.effectAllowed === 'move') {
+                    moveAccepted.next({ item, list });
+                }
+                this.dndDragEnd.emit();
+            }
+        });
+    }
+
+    public ngOnDestroy(): void {
+        this.dropSubscription.unsubscribe;
     }
 
     @HostListener('dragstart', ['$event'])
@@ -84,7 +106,7 @@ export class DndDraggable {
         // add drag classes
         this.nativeElement.classList.add('dndDragging');
         setTimeout(
-            (() => this.nativeElement.classList.add('dndDraggingSource')), 0);
+            (() => this.nativeElement.style.display = 'none'));
 
         // Try setting a proper drag image if triggered on a dnd-handle (won't work in IE).
         if ((<any>event)._dndHandle && event.dataTransfer.setDragImage) {
@@ -97,16 +119,10 @@ export class DndDraggable {
 
     @HostListener('dragend', ['$event'])
     public handleDragEnd(event: DragEvent): void {
-        event = event['originalEvent'] || event;
-
-        let cb = { copy: 'dndCopied', link: 'dndLinked', move: 'dndMoved', none: 'dndCanceled' };
-        (this[cb[this.dragState.effectAllowed]] as EventEmitter<any>).emit();
-        this.dndDragEnd.emit();
-
         // Clean up
         this.dragState.isDragging = false;
         this.nativeElement.classList.remove('dndDragging');
-        this.nativeElement.classList.remove('dndDraggingSource');
+        this.nativeElement.style.display = 'block';
         event.stopPropagation();
 
         // In IE9 it is possible that the timeout from dragstart triggers after the dragend handler.
