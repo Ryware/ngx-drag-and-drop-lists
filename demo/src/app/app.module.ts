@@ -3,9 +3,13 @@ import { NgModule } from '@angular/core';
 
 import { AppComponent } from './app.component';
 import { DndListModule } from 'ngx-drag-and-drop-lists';
+import { ItemComponent } from './components/item.component';
+import { ContainerComponent } from './components/container.component';
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    ItemComponent,
+    ContainerComponent,
   ],
   imports: [
     BrowserModule,
