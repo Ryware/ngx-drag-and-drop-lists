@@ -1,9 +1,11 @@
 import { Component, Input } from "@angular/core";
 
 @Component({
-    selector: 'container',
+    selector: 'item',
     template: `
-        <div class="col-md-12">{{model.type}} {{model.id}}</div>
+        <div  [dndType]="model.type"
+        [dndDraggable]="{draggable:true, effectAllowed:'move'}"
+        [dndObject]="model" class="col-md-12">{{model.type}} {{model.id}}</div>
     `
 })
 export class ItemComponent {

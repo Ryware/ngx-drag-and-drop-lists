@@ -116,8 +116,11 @@
           <div class="dropzone box box-yellow">
             <!-- The dropzone also uses the list template -->
             <h3>Dropzone {{i + 1}}</h3>
-            <div *ngFor="let object of dropzone">
-              <ng-container *ngTemplateOutlet="object.type === 'item'?itemTemplate:containerTemplate;context:object"></ng-container>
+            <div *ngFor="let item of dropzone">
+              <container *ngIf="item.type === 'container'"
+                [model]="item"></container>
+              <item *ngIf="item.type === 'type'"
+                [model]="item"></item>
             </div>
           </div>
         </div>
@@ -127,7 +130,7 @@
   </div>
 
 </div>
-
+<!-- 
 <ng-template #containerTemplate
   let-columns="columns"
   let-id="id"
@@ -159,16 +162,15 @@
       </div>
     </div>
   </div>
-</ng-template>
+</ng-template> -->
 
-<ng-template #itemTemplate
+<!-- <ng-template #itemTemplate
   let-id="id"
   let-type="type">
   <div class="col-md-12"
     [dndType]="type"
     [dndObject]="getItemById(id, nestedList.dropzones)"
     [dndDraggable]="{draggable:true, effectAllowed:'move'}">{{type}} {{id}}</div>
-</ng-template>
+</ng-template> -->
 <!-- /container -->
-</div>
-<!-- /container -->
+
