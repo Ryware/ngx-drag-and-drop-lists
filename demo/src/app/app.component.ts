@@ -151,4 +151,8 @@ export class AppComponent {
   constructor() {
 
   }
+
+  public removeItem(item: any, list: any[]): void {
+    list.splice(list.indexOf(item), 1);
+  }
 }

@@ -7,15 +7,14 @@ import {
     MIME_TYPE,
     EDGE_MIME_TYPE,
     MSIE_MIME_TYPE,
-    moveAccepted,
 } from '../index';
 import { Subscription } from 'rxjs/Subscription';
-import { dropAccepted, activeListSource } from './dnd-list';
+import { dropAccepted } from './dnd-list';
 @Directive({
     selector: '[dndDraggable]',
 })
 export class DndDraggable implements OnInit, OnDestroy {
-    @Input('dndDraggable') public option: DndDraggableConfig;
+    @Input('dndDraggable') public option: DndDraggableConfig = <DndDraggableConfig>{ draggable: true };
     @Input('dndType') public dndType: string;
     @Input('dndObject') public dndObject: HTMLElement;
     @Input('dndDragDisabled') public set disableDrag(disable: string | boolean) {
@@ -36,7 +35,6 @@ export class DndDraggable implements OnInit, OnDestroy {
     private dropSubscription: Subscription;
     private nativeElement: HTMLElement;
     private draggableString: string = 'draggable';
-    public static latestDrag: any = undefined;
     constructor(
         private element: ElementRef,
         private dndState: DndState,
@@ -58,9 +56,6 @@ export class DndDraggable implements OnInit, OnDestroy {
             if (JSON.stringify(this.dndObject) === JSON.stringify(item)) {
                 let cb: object = { copy: 'dndCopied', link: 'dndLinked', move: 'dndMoved', none: 'dndCanceled' };
                 (this[cb[this.dragState.effectAllowed]] as EventEmitter<any>).emit();
-                if (this.dragState.effectAllowed === 'move') {
-                    moveAccepted.next({ item, list });
-                }
                 this.dndDragEnd.emit();
             }
         });
@@ -109,10 +104,6 @@ export class DndDraggable implements OnInit, OnDestroy {
         setTimeout(
             (() => this.nativeElement.style.display = 'none'));
 
-        // set latest drag
-        DndDraggable.latestDrag = this.dndObject;
-        activeListSource.next((this.nativeElement as HTMLElement).parentElement);
-
         // Try setting a proper drag image if triggered on a dnd-handle (won't work in IE).
         if ((<any>event)._dndHandle && event.dataTransfer.setDragImage) {
             event.dataTransfer.setDragImage(this.nativeElement, 0, 0);
@@ -129,7 +120,6 @@ export class DndDraggable implements OnInit, OnDestroy {
         this.nativeElement.classList.remove('dndDragging');
         this.nativeElement.style.display = 'block';
         event.stopPropagation();
-        DndDraggable.latestDrag = undefined;
         // In IE9 it is possible that the timeout from dragstart triggers after the dragend handler.
         setTimeout((() => this.nativeElement.classList.remove('dndDraggingSource')), 0);
     }
@@ -144,6 +134,12 @@ export class DndDraggable implements OnInit, OnDestroy {
         this.dndSelected.emit();
 
         event.stopPropagation();
+    }
+
+    private findElementWithAttribute(element: HTMLElement, attr: string): HTMLElement {
+        if (element.hasAttribute(attr)) return element;
+        if (element.parentElement === null) return;
+        return this.findElementWithAttribute(element.parentElement, attr);
     }
 
 }

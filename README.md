@@ -8,7 +8,6 @@ Angular directives that allow you to build sortable lists with the native HTML5 
 ## Credits to the original creator
     
 This library is inspired by the https://github.com/marceljuenemann/angular-drag-and-drop-lists library which was written in AngularJS.
-This is only a version of it for Angular2/4
 
 **Drag Element Inputs**
 * `dndDraggable` Required attribute. Signifies that this element is part of the dndDraggable. Can receive options on how to behave of the following type:
@@ -83,7 +82,31 @@ Use the `dndNoDrag` attribute inside of `dndDraggable` elements to prevent them 
 
 Use the `dndHandle` directive within a `dndNoDrag` element in order to allow dragging of that element after all. Therefore, by combining `dndNoDrag` and `dndHandle` you can allow `dndDraggable` elements to only be dragged via specific *handle* elements.
 
-**Example** 
+**Example 1** 
+
+```
+      <div *ngFor="let list of models.lists;let i = index">
+        <div class="panel panel-info">
+          <div class="panel-heading">
+            <h3 class="panel-title">List {{i}}</h3>
+          </div>
+          <div class="panel-body">
+            <ul [dndList]
+              [dndModel]="list">
+              <li *ngFor="let item of list;let i = index"
+                [dndDraggable]
+                [dndObject]="item"
+                (dndMoved)="removeMovedItem(i, list)"
+                [class.selected]="models.selected === item">
+                {{item.label}}
+              </li>
+            </ul>
+          </div>
+        </div>
+```
+
+
+**Example 2** 
 
 ```
       <div *ngFor="let list of models.lists;let i = index">

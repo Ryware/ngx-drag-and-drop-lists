@@ -14,8 +14,6 @@ import { Subscription } from 'rxjs/Subscription';
 import { DndDraggable } from '../index';
 
 export const dropAccepted: Subject<any> = new Subject();
-export const moveAccepted: Subject<any> = new Subject();
-export const activeListSource: Subject<any> = new Subject();
 
 @Directive({
     selector: '[dndList]',
@@ -24,7 +22,7 @@ export class DndList implements OnInit, OnDestroy {
     @Input('dndList') public option: DndListSettings = {
         disabled: false,
         effectAllowed: 'move',
-        allowedTypes: [],
+        allowedTypes: undefined,
     };
     @Input('dndModel') public dndModel: any[];
     @Input() public set dndPlaceholder(placeholder: Element) {
@@ -38,10 +36,7 @@ export class DndList implements OnInit, OnDestroy {
     private nativeElement: HTMLElement;
     private listSettings: {} = {};
     private placeholder: Element;
-    private moveSubscription: Subscription;
-    private sourceSubscription: Subscription;
 
-    public static latestListSource: any[] = undefined;
     constructor(
         private element: ElementRef,
         private dndState: DndState,
@@ -52,23 +47,9 @@ export class DndList implements OnInit, OnDestroy {
     }
 
     public ngOnInit(): void {
-        this.moveSubscription = moveAccepted.subscribe(({ item, list }) => {
-            if (DndList.latestListSource === this.dndModel) {
-                let indexItem: number = DndList.latestListSource.indexOf(DndDraggable.latestDrag);
-                if (indexItem === -1) return;
-                DndList.latestListSource.splice(indexItem, 1);
-            }
-        });
-        this.sourceSubscription = activeListSource.subscribe((element: HTMLElement) => {
-            if (this.nativeElement === element) {
-                DndList.latestListSource = this.dndModel;
-            }
-        });
     }
 
     public ngOnDestroy(): void {
-        this.moveSubscription.unsubscribe();
-        this.sourceSubscription.unsubscribe();
     }
 
     @HostListener('dragenter', ['$event'])
@@ -86,7 +67,6 @@ export class DndList implements OnInit, OnDestroy {
     @HostListener('dragover', ['$event'])
     public handleDragOver(event: DragEvent): boolean {
         event = event['originalEvent'] || event;
-
         const mimeType: string = this.getMimeType(event.dataTransfer.types);
         const itemType: string = this.getItemType(mimeType);
         if (!mimeType || !this.isDropAllowed(itemType)) {

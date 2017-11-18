@@ -10,29 +10,25 @@
 
   <div class="row">
     <div class="col-md-6"
-      [dndList]="{
-      disabled: false,
-      effectAllowed: 'move',
-      allowedTypes: ['item']}"
+      [dndList]
       [dndPlaceholder]="placeholder"
       [dndModel]="simpleList[0]">
       <div *ngFor="let item of simpleList[0]"
         class="col-md-12"
         [dndType]="'item'"
-        [dndDraggable]="{draggable:true, effectAllowed:'move'}"
+        (dndMoved)="removeItem(item, simpleList[0])"
+        [dndDraggable]
         [dndObject]="item">{{item.name}}</div>
     </div>
     <div class="col-md-6"
-      [dndList]="{
-      disabled: false,
-      effectAllowed: 'move',
-      allowedTypes: ['item']}"
+      [dndList]
       [dndModel]="simpleList[1]"
       [dndPlaceholder]="placeholder">
       <div *ngFor="let item of simpleList[1]"
         class="col-md-12"
         [dndType]="'item'"
-        [dndDraggable]="{draggable:true, effectAllowed:'move'}"
+        (dndMoved)="removeItem(item, simpleList[1])"
+        [dndDraggable]
         [dndObject]="item">{{item.name}}</div>
     </div>
   </div>
@@ -43,31 +39,28 @@
     <div class="col-md-4">
       <h4>Only males</h4>
       <div [dndList]="{
-        disabled: false,
-        effectAllowed: 'move',
         allowedTypes: ['male']}"
         [dndPlaceholder]="placeholder"
         [dndModel]="typedList[0]">
-
         <div *ngFor="let item of typedList[0]"
           class="col-md-12"
           [dndType]="item.type"
-          [dndDraggable]="{draggable:true, effectAllowed:'move'}"
+          (dndMoved)="removeItem(item, typedList[0])"
+          [dndDraggable]
           [dndObject]="item">{{item.name}}</div>
       </div>
     </div>
     <div class="col-md-4">
       <h4>Only females</h4>
       <div [dndList]="{
-        disabled: false,
-        effectAllowed: 'move',
         allowedTypes: ['female']}"
         [dndModel]="typedList[1]"
         [dndPlaceholder]="placeholder">
         <div *ngFor="let item of typedList[1]"
           class="col-md-12"
           [dndType]="item.type"
-          [dndDraggable]="{draggable:true, effectAllowed:'move'}"
+          (dndMoved)="removeItem(item, typedList[1])"
+          [dndDraggable]
           [dndObject]="item">{{item.name}}</div>
       </div>
     </div>
@@ -75,15 +68,14 @@
     <div class="col-md-4">
       <h4>People</h4>
       <div [dndList]="{
-      disabled: false,
-      effectAllowed: 'move',
       allowedTypes: ['male','female']}"
         [dndModel]="typedList[2]"
         [dndPlaceholder]="placeholder">
         <div *ngFor="let item of typedList[2]"
           class="col-md-12"
           [dndType]="item.type"
-          [dndDraggable]="{draggable:true, effectAllowed:'move'}"
+          (dndMoved)="removeItem(item, typedList[2])"
+          [dndDraggable]
           [dndObject]="item">{{item.name}}</div>
       </div>
     </div>
@@ -100,7 +92,7 @@
           <li type="button"
             *ngFor="let template of nestedList.templates"
             [dndType]="template.type"
-            [dndDraggable]="{draggable:true, effectAllowed:'copy'}"
+            [dndDraggable]="{effectAllowed:'copy'}"
             [dndObject]="template"
             (dndCopied)="template.id = template.id + 1"
             class="btn btn-default btn-lg col-md-12">
@@ -116,11 +108,21 @@
           <div class="dropzone box box-yellow">
             <!-- The dropzone also uses the list template -->
             <h3>Dropzone {{i + 1}}</h3>
-            <div *ngFor="let item of dropzone">
-              <container *ngIf="item.type === 'container'"
-                [model]="item"></container>
-              <item *ngIf="item.type === 'type'"
-                [model]="item"></item>
+            <div [dndList]="{
+              allowedTypes: ['item','container']}"
+              [dndModel]="dropzone"
+              [dndPlaceholder]="placeholder">
+              <div *ngFor="let item of dropzone">
+                <container *ngIf="item.type === 'container'"
+                  [list]="dropzone"
+                  [model]="item"></container>
+                <div *ngIf="item.type === 'item'"
+                  [dndType]="item.type"
+                  [dndDraggable]
+                  (dndMoved)="removeItem(item, dropzone)"
+                  [dndObject]="item"
+                  class="col-md-12">{{item.type}} {{item.id}}</div>
+              </div>
             </div>
           </div>
         </div>
@@ -130,47 +132,3 @@
   </div>
 
 </div>
-<!-- 
-<ng-template #containerTemplate
-  let-columns="columns"
-  let-id="id"
-  let-type="type">
-  <div class="panel"
-    [dndType]="type"
-    [dndDraggable]="{draggable:true, effectAllowed:'move'}"
-    [dndObject]="getItemById(id, columns)">
-    <div class="panel-heading">
-      {{type}} {{id}}
-    </div>
-    <div class="panel-body"
-      [dndList]="{
-      disabled: false,
-      effectAllowed: 'move',
-      allowedTypes: ['item','container']}"
-      [dndModel]="columns"
-      [dndPlaceholder]="placeholder">
-      <div class="col-md-12"
-        *ngFor="let colObject of columns">
-        <ng-container *ngIf="!isArray(colObject)">
-          <ng-container *ngTemplateOutlet="colObject.type === 'item'?itemTemplate:containerTemplate;context:colObject"></ng-container>
-        </ng-container>
-        <ng-container *ngIf="isArray(colObject)">
-          <ng-container *ngFor="let object of colObject">
-            <ng-container *ngTemplateOutlet="object.type === 'item'?itemTemplate:containerTemplate;context:object"></ng-container>
-          </ng-container>
-        </ng-container>
-      </div>
-    </div>
-  </div>
-</ng-template> -->
-
-<!-- <ng-template #itemTemplate
-  let-id="id"
-  let-type="type">
-  <div class="col-md-12"
-    [dndType]="type"
-    [dndObject]="getItemById(id, nestedList.dropzones)"
-    [dndDraggable]="{draggable:true, effectAllowed:'move'}">{{type}} {{id}}</div>
-</ng-template> -->
-<!-- /container -->
-
