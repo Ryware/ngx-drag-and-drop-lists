@@ -111,7 +111,7 @@
             <div [dndList]="{
               allowedTypes: ['item','container']}"
               [dndModel]="dropzone"
-              [dndPlaceholder]="placeholder">
+              [dndPlaceholder]="placeholder" class="col-md-12">
               <div *ngFor="let item of dropzone">
                 <container *ngIf="item.type === 'container'"
                   [list]="dropzone"
