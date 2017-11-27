@@ -4,4 +4,5 @@ export interface DndListSettings {
     disabled: boolean;
     externalSources?: boolean;
     horizontal?: boolean;
+    max?: number;
 }

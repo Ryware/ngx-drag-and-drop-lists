@@ -72,7 +72,6 @@ export class DndList implements OnInit, OnDestroy {
         if (!mimeType || !this.isDropAllowed(itemType)) {
             return true;
         }
-
         // Make sure the placeholder is shown, which is especially important if the list is empty.
         if (this.placeholder.parentNode !== this.nativeElement) {
             this.nativeElement.appendChild(this.placeholder);
@@ -246,6 +245,7 @@ export class DndList implements OnInit, OnDestroy {
      */
     private isDropAllowed(itemType: string): boolean {
         if (this.option.disabled) return false;
+        if (this.option.max && this.dndModel.length === this.option.max) return false;
         if (!this.option.externalSources && !this.dragState.isDragging) return false;
         if (!this.option.allowedTypes || itemType === null) return true;
         return itemType && this.option.allowedTypes.indexOf(itemType) !== -1;

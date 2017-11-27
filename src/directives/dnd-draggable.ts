@@ -22,7 +22,6 @@ export class DndDraggable implements OnInit, OnDestroy {
             this.nativeElement.setAttribute(this.draggableString, (!disable).toString());
         }
     }
-
     @Output('dndDragStart') public dndDragStart: EventEmitter<any> = new EventEmitter();
     @Output('dndDragEnd') public dndDragEnd: EventEmitter<any> = new EventEmitter();
     @Output('dndCopied') public dndCopied: EventEmitter<any> = new EventEmitter();
@@ -118,7 +117,7 @@ export class DndDraggable implements OnInit, OnDestroy {
         // Clean up
         this.dragState.isDragging = false;
         this.nativeElement.classList.remove('dndDragging');
-        this.nativeElement.style.display = 'block';
+        this.nativeElement.style.removeProperty('display');
         event.stopPropagation();
         // In IE9 it is possible that the timeout from dragstart triggers after the dragend handler.
         setTimeout((() => this.nativeElement.classList.remove('dndDraggingSource')), 0);
