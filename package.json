@@ -5,9 +5,10 @@
   "main": "index.js",
   "scripts": {
     "ngc": "ngc",
-    "build": "npm run ngc && node ./scripts/copy-package",
+    "build": "tsc",
     "publishPackage": "npm run build && cd dist && npm publish",
-    "dev": "tsc --watch"
+    "dev": "tsc --watch",
+    "postinstall": "postinstall-build dist"
   },
   "repository": {
     "type": "git",
@@ -25,7 +26,9 @@
     "url": "https://github.com/misha130/ngx-drag-and-drop-lists/issues"
   },
   "homepage": "https://github.com/misha130/ngx-drag-and-drop-lists#readme",
-  "dependencies": {},
+  "dependencies": {
+    "postinstall-build": "^5.0.1"
+  },
   "devDependencies": {
     "@angular/animations": "~5.0.1",
     "@angular/common": "~5.0.1",
