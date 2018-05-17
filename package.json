@@ -8,7 +8,7 @@
     "build": "tsc",
     "publishPackage": "npm run build && cd dist && npm publish",
     "dev": "tsc --watch",
-    "postinstall": "postinstall-build dist"
+    "postinstall": "tsc"
   },
   "repository": {
     "type": "git",
@@ -26,9 +26,7 @@
     "url": "https://github.com/misha130/ngx-drag-and-drop-lists/issues"
   },
   "homepage": "https://github.com/misha130/ngx-drag-and-drop-lists#readme",
-  "dependencies": {
-    "postinstall-build": "^5.0.1"
-  },
+  "dependencies": {},
   "devDependencies": {
     "@angular/animations": "~5.0.1",
     "@angular/common": "~5.0.1",
