@@ -312,6 +312,13 @@ export class DndList implements OnInit, OnDestroy {
      * object needs to be inserted
      */
     private getPlaceholderIndex(): number {
+        // Remove the dragging element to get the correct index of the placeholder;
+        for(let i = 0; i < this.nativeElement.children.length; i++){
+            if(this.nativeElement.children[i].classList.contains('dndDragging')){
+                this.nativeElement.children[i].remove();
+                break;
+            }
+        }
         return Array.prototype.indexOf.call(this.nativeElement.children, this.placeholder);
     }
 }
