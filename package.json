@@ -5,9 +5,10 @@
   "main": "index.js",
   "scripts": {
     "ngc": "ngc",
-    "build": "npm run ngc && node ./scripts/copy-package",
+    "build": "tsc",
     "publishPackage": "npm run build && cd dist && npm publish",
-    "dev": "tsc --watch"
+    "dev": "tsc --watch",
+    "postinstall": "tsc"
   },
   "repository": {
     "type": "git",
