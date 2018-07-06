@@ -90,7 +90,7 @@ export class DndList implements OnInit, OnDestroy {
                 // If the mouse pointer is in the upper half of the list item element,
                 // we position the placeholder before the list item, otherwise after it.
                 const rect: ClientRect = (listItemNode as Element).getBoundingClientRect();
-                if (this.option.horizontal) {
+                if (this.option && this.option.horizontal) {
                     isFirstHalf = event.clientX < rect.left + rect.width / 2;
                 } else {
                     isFirstHalf = event.clientY < rect.top + rect.height / 2;
@@ -252,10 +252,12 @@ export class DndList implements OnInit, OnDestroy {
      * dnd-allowed-types attribute. If the item Type is unknown (null), the drop will be allowed.
      */
     private isDropAllowed(itemType: string): boolean {
-        if (this.option.disabled) return false;
-        if (this.option.max && this.dndModel.length === this.option.max) return false;
-        if (!this.option.externalSources && !this.dragState.isDragging) return false;
-        if (!this.option.allowedTypes || itemType === null) return true;
+        if (this.option) {
+            if (this.option.disabled) return false;
+            if (this.option.max && this.dndModel.length === this.option.max) return false;
+            if (!this.option.externalSources && !this.dragState.isDragging) return false;
+            if (!this.option.allowedTypes || itemType === null) return true;
+        }
         return itemType && this.option.allowedTypes.indexOf(itemType) !== -1;
     }
 
@@ -273,7 +275,7 @@ export class DndList implements OnInit, OnDestroy {
         if (this.dragState.isDragging) {
             effects = this.dndState.filterEffects(effects, this.dragState.effectAllowed);
         }
-        if (this.option.effectAllowed) {
+        if (this.option && this.option.effectAllowed) {
             effects = this.dndState.filterEffects(effects, this.option.effectAllowed);
         }
         // MacOS automatically filters dataTransfer.effectAllowed depending on the modifier keys,

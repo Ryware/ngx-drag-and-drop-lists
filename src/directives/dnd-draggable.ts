@@ -54,7 +54,9 @@ export class DndDraggable implements OnInit, OnDestroy {
             // event = event['originalEvent'] || event;
             if (JSON.stringify(this.dndObject) === JSON.stringify(item)) {
                 let cb: object = { copy: 'dndCopied', link: 'dndLinked', move: 'dndMoved', none: 'dndCanceled' };
-                (this[cb[this.dragState.effectAllowed]] as EventEmitter<any>).emit();
+                if (this.dragState) {
+                    (this[cb[this.dragState.effectAllowed]] as EventEmitter<any>).emit();
+                }
                 this.dndDragEnd.emit();
             }
         });
@@ -75,7 +77,9 @@ export class DndDraggable implements OnInit, OnDestroy {
         this.dragState.isDragging = true;
         this.dragState.itemType = this.dndType;
         this.dragState.dropEffect = 'none';
-
+        if (!this.option) {
+            this.option = <DndDraggableConfig>{ draggable: true };
+        }
         this.dragState.effectAllowed = this.option.effectAllowed || ALL_EFFECTS[0];
         event.dataTransfer.effectAllowed = this.dragState.effectAllowed;
         // Internet Explorer and Microsoft Edge don't support custom mime types, see design doc:
