@@ -8,8 +8,8 @@ import {
     EDGE_MIME_TYPE,
     MSIE_MIME_TYPE,
 } from '../index';
-import { Subscription } from 'rxjs/Subscription';
 import { dropAccepted } from './dnd-list';
+import { Subscription } from 'rxjs/internal/Subscription';
 @Directive({
     selector: '[dndDraggable]',
 })

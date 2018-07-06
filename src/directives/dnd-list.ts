@@ -9,9 +9,8 @@ import {
     EDGE_MIME_TYPE,
     MSIE_MIME_TYPE,
 } from '../services';
-import { Subject } from 'rxjs/Subject';
-import { Subscription } from 'rxjs/Subscription';
 import { DndDraggable } from '../index';
+import { Subject } from 'rxjs/internal/Subject';
 
 export const dropAccepted: Subject<any> = new Subject();
 
@@ -47,9 +46,11 @@ export class DndList implements OnInit, OnDestroy {
     }
 
     public ngOnInit(): void {
+        // placeholder
     }
 
     public ngOnDestroy(): void {
+        // placeholder
     }
 
     @HostListener('dragenter', ['$event'])
@@ -159,6 +160,8 @@ export class DndList implements OnInit, OnDestroy {
 
         // Invoke the callback, which can transform the transferredObject and even abort the drop.
         let index: number = this.getPlaceholderIndex();
+        // create an offset to account for extra elements (including the placeholder element)
+        let offset: number = this.nativeElement.children.length - 1 - this.dndModel.length;
         if (this.dndDrop) {
             this.invokeCallback(this.dndDrop, event, dropEffect, itemType, index, data);
             if (!data) return this.stopDragOver();
@@ -172,7 +175,12 @@ export class DndList implements OnInit, OnDestroy {
 
         // Insert the object into the array, unless dnd-drop took care of that (returned true).
         if (data !== true) {
-            this.dndModel.splice(index, 0, data);
+            // use the offset to create an insertionPoint
+            let insertionPoint: number = index - offset;
+            if (insertionPoint < 0) {
+                insertionPoint = 0;
+            }
+            this.dndModel.splice(insertionPoint, 0, data);
         }
         this.invokeCallback(this.dndInserted, event, dropEffect, itemType, index, data);
 
@@ -313,8 +321,8 @@ export class DndList implements OnInit, OnDestroy {
      */
     private getPlaceholderIndex(): number {
         // Remove the dragging element to get the correct index of the placeholder;
-        for(let i = 0; i < this.nativeElement.children.length; i++){
-            if(this.nativeElement.children[i].classList.contains('dndDragging')){
+        for (let i: number = 0; i < this.nativeElement.children.length; i++) {
+            if (this.nativeElement.children[i].classList.contains('dndDragging')) {
                 this.nativeElement.children[i].remove();
                 break;
             }
