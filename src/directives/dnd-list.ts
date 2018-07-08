@@ -1,7 +1,6 @@
 import { Directive, Input, OnDestroy, OnInit, Output, ElementRef, HostListener, EventEmitter } from '@angular/core';
 import {
     DndState,
-    DndDraggableConfig,
     DndListSettings,
     DndStateConfig,
     ALL_EFFECTS,
@@ -9,8 +8,7 @@ import {
     EDGE_MIME_TYPE,
     MSIE_MIME_TYPE,
 } from '../services';
-import { DndDraggable } from '../index';
-import { Subject } from 'rxjs/internal/Subject';
+import { Subject } from 'rxjs/Subject';
 
 export const dropAccepted: Subject<any> = new Subject();
 

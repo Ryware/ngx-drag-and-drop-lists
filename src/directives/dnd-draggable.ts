@@ -9,7 +9,7 @@ import {
     MSIE_MIME_TYPE,
 } from '../index';
 import { dropAccepted } from './dnd-list';
-import { Subscription } from 'rxjs/internal/Subscription';
+import { Subscription } from 'rxjs/Subscription';
 @Directive({
     selector: '[dndDraggable]',
 })

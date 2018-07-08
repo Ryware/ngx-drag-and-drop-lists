@@ -1,6 +1,6 @@
 {
   "name": "ngx-drag-and-drop-lists",
-  "version": "1.2.3",
+  "version": "1.2.4",
   "description": "angular drag and drop component for lists",
   "main": "index.js",
   "scripts": {
@@ -41,6 +41,7 @@
     "serve-static": "^1.13.2",
     "core-js": "^2.5.7",
     "rxjs": "^6.2.1",
+    "rxjs-compat": "^6.2.1",
     "tslint": "^5.10.0",
     "typescript": "~2.9.2",
     "zone.js": "^0.8.26"
