@@ -105,7 +105,11 @@ export class DndDraggable implements OnInit, OnDestroy {
         // add drag classes
         this.nativeElement.classList.add('dndDragging');
         setTimeout(
-            (() => this.nativeElement.style.display = 'none'));
+            () => {
+                if (this.dragState.effectAllowed === 'move') {
+                    this.nativeElement.style.display = 'none';
+                }
+            });
 
         // Try setting a proper drag image if triggered on a dnd-handle (won't work in IE).
         if ((<any>event)._dndHandle && event.dataTransfer.setDragImage) {

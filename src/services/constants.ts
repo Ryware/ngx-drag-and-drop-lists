@@ -6,4 +6,6 @@ export const EDGE_MIME_TYPE: string = 'application/json';
 export const MSIE_MIME_TYPE: string = 'Text';
 
 // All valid HTML5 drop effects, in the order in which we prefer to use them.
-export const ALL_EFFECTS: string[] = ['move', 'copy', 'link'];
+export const ALL_EFFECTS: Effects[] = ['move', 'copy', 'link'];
+
+export type Effects = 'move' | 'copy' | 'link';

@@ -1,11 +1,13 @@
+import { Effects } from './constants';
+
 export interface DndDraggableConfig {
     draggable: boolean;
-    effectAllowed: string;
+    effectAllowed: Effects;
 }
 
 export interface DndStateConfig {
     isDragging: boolean;
     itemType: string;
     dropEffect: string;
-    effectAllowed: string;
+    effectAllowed: Effects;
 }
