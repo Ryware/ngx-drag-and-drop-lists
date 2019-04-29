@@ -2,7 +2,7 @@ ngx-drag-and-drop-lists
 ===========================
 Angular directives that allow you to build sortable lists with the native HTML5 drag & drop API. The directives can also be nested to bring drag & drop to your WYSIWYG editor, your tree, or whatever fancy structure you are building.
 
-### [Demo](https://ngx-drag-and-drop-lists.herokuapp.com/)
+### [Demo](https://stackblitz.com/edit/ngx-drag-and-drop-lists/)
 
 
 ## Credits to the original creator
