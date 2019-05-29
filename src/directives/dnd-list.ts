@@ -24,7 +24,7 @@ export class DndList implements OnInit, OnDestroy {
     @Input('dndModel') public dndModel: any[];
     @Input() public set dndPlaceholder(placeholder: Element) {
         this.placeholder = placeholder;
-        placeholder.remove();
+        placeholder.parentNode.removeChild(placeholder);
     }
     @Output('dndDragOver') public dndDragOver: EventEmitter<any> = new EventEmitter();
     @Output('dndDrop') public dndDrop: EventEmitter<any> = new EventEmitter();
@@ -293,7 +293,7 @@ export class DndList implements OnInit, OnDestroy {
      * Small helper function that cleans up if we aborted a drop.
      */
     private stopDragOver(): boolean {
-        this.placeholder.remove();
+        this.placeholder.parentNode.removeChild(this.placeholder);
         this.nativeElement.classList.remove('dndDragover');
         return true;
     }
@@ -323,7 +323,7 @@ export class DndList implements OnInit, OnDestroy {
         // Remove the dragging element to get the correct index of the placeholder;
         for (let i: number = 0; i < this.nativeElement.children.length; i++) {
             if (this.nativeElement.children[i].classList.contains('dndDragging')) {
-                this.nativeElement.children[i].remove();
+                this.nativeElement.children[i].parentNode.removeChild(this.nativeElement.children[i].remove(););
                 break;
             }
         }
