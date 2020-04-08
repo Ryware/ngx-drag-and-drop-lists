@@ -8,7 +8,7 @@ import {
     EDGE_MIME_TYPE,
     MSIE_MIME_TYPE,
 } from '../services';
-import { Subject } from 'rxjs/Subject';
+import { Subject } from 'rxjs';
 
 export const dropAccepted: Subject<any> = new Subject();
 
@@ -223,7 +223,7 @@ export class DndList implements OnInit, OnDestroy {
      * Given the types array from the DataTransfer object, returns the first valid mime type.
      * A type is valid if it starts with MIME_TYPE, or it equals MSIE_MIME_TYPE or EDGE_MIME_TYPE.
      */
-    private getMimeType(types: string[]): string {
+    private getMimeType(types: readonly string[]): string {
         if (!types) return MSIE_MIME_TYPE; // IE 9 workaround.
         for (let i: number = 0; i < types.length; i++) {
             if (types[i] === MSIE_MIME_TYPE || types[i] === EDGE_MIME_TYPE ||
