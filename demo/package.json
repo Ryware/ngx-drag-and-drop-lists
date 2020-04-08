@@ -24,7 +24,7 @@
     "rxjs": "^6.5.5",
     "zone.js": "^0.10.3",
     "@angular/router": "^9.1.1",
-    "bootstrap": "^3.3.7",
+    "bootstrap": "^3.4.1",
     "ngx-drag-and-drop-lists": "^1.2.5"
   },
   "devDependencies": {
