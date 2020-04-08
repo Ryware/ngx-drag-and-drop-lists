@@ -9,7 +9,7 @@ import {
     MSIE_MIME_TYPE,
 } from '../index';
 import { dropAccepted } from './dnd-list';
-import { Subscription } from 'rxjs/Subscription';
+import { Subscription } from 'rxjs';
 @Directive({
     selector: '[dndDraggable]',
 })
@@ -19,7 +19,7 @@ export class DndDraggable implements OnInit, OnDestroy {
     @Input('dndObject') public dndObject: HTMLElement;
     @Input('dndDragDisabled') public set disableDrag(disable: string | boolean) {
         if (disable !== undefined) {
-            this.nativeElement.setAttribute(this.draggableString, (!disable).toString());
+            this.nativeElement.nativeElement.setAttribute(this.draggableString, (!disable).toString());
         }
     }
     @Output('dndDragStart') public dndDragStart: EventEmitter<any> = new EventEmitter();
@@ -32,7 +32,7 @@ export class DndDraggable implements OnInit, OnDestroy {
 
     private dragState: DndStateConfig;
     private dropSubscription: Subscription;
-    private nativeElement: HTMLElement;
+    private nativeElement: ElementRef;
     private draggableString: string = 'draggable';
     constructor(
         private element: ElementRef,
@@ -40,11 +40,11 @@ export class DndDraggable implements OnInit, OnDestroy {
     ) {
         this.dragState = dndState.dragState;
         this.nativeElement = element.nativeElement;
-        this.nativeElement.setAttribute(this.draggableString, 'true');
+        this.nativeElement.nativeElement.setAttribute(this.draggableString, 'true');
         /**
          * Workaround to make element draggable in IE9
          */
-        this.nativeElement.onselectstart = function (): void {
+        this.nativeElement.nativeElement.onselectstart = function (): void {
             if (this.dragDrop) this.dragDrop();
         };
     }
@@ -70,7 +70,7 @@ export class DndDraggable implements OnInit, OnDestroy {
     public handleDragStart(event: DragEvent): void {
 
         // disabled check
-        if (this.nativeElement.getAttribute(this.draggableString) === 'false')
+        if (this.nativeElement.nativeElement.getAttribute(this.draggableString) === 'false')
             return;
 
         // init drag
@@ -103,17 +103,17 @@ export class DndDraggable implements OnInit, OnDestroy {
         }
 
         // add drag classes
-        this.nativeElement.classList.add('dndDragging');
+        this.nativeElement.nativeElement.classList.add('dndDragging');
         setTimeout(
             () => {
                 if (this.dragState.effectAllowed === 'move') {
-                    this.nativeElement.style.display = 'none';
+                    this.nativeElement.nativeElement.style.display = 'none';
                 }
             });
 
         // Try setting a proper drag image if triggered on a dnd-handle (won't work in IE).
         if ((<any>event)._dndHandle && event.dataTransfer.setDragImage) {
-            event.dataTransfer.setDragImage(this.nativeElement, 0, 0);
+            event.dataTransfer.setDragImage(this.nativeElement.nativeElement, 0, 0);
         }
 
         this.dndDragStart.emit();
@@ -124,17 +124,17 @@ export class DndDraggable implements OnInit, OnDestroy {
     public handleDragEnd(event: DragEvent): void {
         // Clean up
         this.dragState.isDragging = false;
-        this.nativeElement.classList.remove('dndDragging');
-        this.nativeElement.style.removeProperty('display');
+        this.nativeElement.nativeElement.classList.remove('dndDragging');
+        this.nativeElement.nativeElement.style.removeProperty('display');
         event.stopPropagation();
         // In IE9 it is possible that the timeout from dragstart triggers after the dragend handler.
-        setTimeout((() => this.nativeElement.classList.remove('dndDraggingSource')), 0);
+        setTimeout((() => this.nativeElement.nativeElement.classList.remove('dndDraggingSource')), 0);
     }
 
     @HostListener('click', ['$event'])
     public handleClick(event: Event): void {
 
-        if (this.nativeElement.hasAttribute('dndSelected')) return;
+        if (this.nativeElement.nativeElement.hasAttribute('dndSelected')) return;
 
         event = event['originalEvent'] || event;
 

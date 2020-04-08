@@ -1,6 +1,6 @@
 {
   "name": "ngx-drag-and-drop-lists",
-  "version": "1.2.5",
+  "version": "1.2.6",
   "description": "angular drag and drop component for lists",
   "main": "index.js",
   "scripts": {
@@ -18,6 +18,7 @@
     "drag-and-drop",
     "angular2",
     "angular4",
+    "angular9",
     "alignment"
   ],
   "author": "Misha Tarnortusky",
@@ -28,22 +29,20 @@
   "homepage": "https://github.com/misha130/ngx-drag-and-drop-lists#readme",
   "dependencies": {},
   "devDependencies": {
-    "@angular/animations": "~6.0.7",
-    "@angular/common": "~6.0.7",
-    "@angular/compiler": "~6.0.7",
-    "@angular/core": "^6.0.7",
-    "@angular/forms": "~6.0.7",
-    "@angular/http": "~6.0.7",
-    "@angular/platform-browser": "^6.0.7",
-    "@angular/platform-browser-dynamic": "^6.0.7",
-    "@angular/platform-server": "~6.0.7",
-    "connect": "^3.6.6",
-    "serve-static": "^1.13.2",
-    "core-js": "^2.5.7",
-    "rxjs": "^6.2.1",
-    "rxjs-compat": "^6.2.1",
-    "tslint": "^5.10.0",
-    "typescript": "~2.9.2",
-    "zone.js": "^0.8.26"
+    "@angular/animations": "~9.1.1",
+    "@angular/common": "~9.1.1",
+    "@angular/compiler": "~9.1.1",
+    "@angular/core": "^9.1.1",
+    "@angular/forms": "~9.1.1",
+    "@angular/platform-browser": "^9.1.1",
+    "@angular/platform-browser-dynamic": "^9.1.1",
+    "@angular/platform-server": "~9.1.1",
+    "connect": "^3.7.0",
+    "serve-static": "^1.14.1",
+    "core-js": "^3.6.4",
+    "rxjs": "^6.5.5",
+    "tslint": "^6.1.1",
+    "typescript": "~3.8.3",
+    "zone.js": "^0.10.3"
   }
 }
