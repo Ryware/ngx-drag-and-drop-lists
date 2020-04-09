@@ -10,6 +10,9 @@
     "dev": "tsc --watch",
     "postinstall": "tsc"
   },
+  "precommit": [
+    "build"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/misha130/ngx-drag-and-drop-lists.git"

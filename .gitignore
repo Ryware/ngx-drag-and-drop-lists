@@ -1,5 +1,4 @@
 node_modules/
-dist/
 aot/    
 debug.log
 npm-debug.log
