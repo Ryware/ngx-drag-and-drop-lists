@@ -27,6 +27,7 @@
     ],
     "angularCompilerOptions": {
         "genDir": "dist/",
+        "enableIvy": false,
         "strictMetadataEmit": true,
         "skipTemplateCodegen": true
     }
