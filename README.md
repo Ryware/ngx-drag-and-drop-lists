@@ -95,6 +95,7 @@ Use the `dndHandle` directive within a `dndNoDrag` element in order to allow dra
               [dndModel]="list">
               <li *ngFor="let item of list;let i = index"
                 [dndDraggable]
+                [dndType]="'item'"
                 [dndObject]="item"
                 (dndMoved)="removeMovedItem(i, list)"
                 [class.selected]="models.selected === item">
