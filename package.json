@@ -1,6 +1,6 @@
 {
   "name": "ngx-drag-and-drop-lists",
-  "version": "1.2.6",
+  "version": "1.3.0",
   "description": "angular drag and drop component for lists",
   "main": "index.js",
   "scripts": {
@@ -10,6 +10,9 @@
     "dev": "tsc --watch",
     "postinstall": "tsc"
   },
+  "precommit": [
+    "build"
+  ],
   "repository": {
     "type": "git",
     "url": "git+https://github.com/misha130/ngx-drag-and-drop-lists.git"
