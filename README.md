@@ -14,7 +14,7 @@ This library is inspired by the https://github.com/marceljuenemann/angular-drag-
 ```
     interface DndDraggableConfig {
         draggable: boolean;
-        effectAllowed: string;
+        effectAllowed: 'move' | 'copy' | 'link';
     }
 ```
 
@@ -51,7 +51,7 @@ This library is inspired by the https://github.com/marceljuenemann/angular-drag-
 ```
     interface DndListSettings {
         allowedTypes: string[];
-        effectAllowed: string;
+        effectAllowed: 'move' | 'copy' | 'link';
         disabled: boolean;
         externalSources: boolean;
         horizontal: boolean;
