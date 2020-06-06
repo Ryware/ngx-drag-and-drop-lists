@@ -1,4 +1,4 @@
-import { Directive, Input, Output, ElementRef, HostListener, EventEmitter } from '@angular/core';
+import { Directive, ElementRef, HostListener } from '@angular/core';
 import {
     DndState,
     DndDraggableConfig,
@@ -14,12 +14,12 @@ import {
  * in Internet Explorer 9.
  */
 export class DndNoDrag {
-    private dragState: DndStateConfig;
+    private readonly dragState: DndStateConfig;
     private nativeElement: HTMLElement;
     private draggableString: string = 'draggable';
     constructor(
-        private element: ElementRef,
-        private dndState: DndState,
+        readonly element: ElementRef,
+        readonly dndState: DndState,
     ) {
         this.dragState = dndState.dragState;
         this.nativeElement = element.nativeElement;

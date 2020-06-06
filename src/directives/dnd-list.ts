@@ -35,8 +35,8 @@ export class DndList implements OnInit, OnDestroy {
     private placeholder: Element;
 
     constructor(
-        private element: ElementRef,
-        private dndState: DndState,
+        readonly element: ElementRef,
+        private readonly dndState: DndState,
     ) {
         this.dragState = dndState.dragState;
         this.nativeElement = element.nativeElement;

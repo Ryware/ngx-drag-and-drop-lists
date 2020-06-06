@@ -19,7 +19,7 @@ export class DndDraggable implements OnInit, OnDestroy {
     @Input('dndObject') public dndObject: HTMLElement;
     @Input('dndDragDisabled') public set disableDrag(disable: string | boolean) {
         if (disable !== undefined) {
-            this.nativeElement.nativeElement.setAttribute(this.draggableString, (!disable).toString());
+            this.element.nativeElement.setAttribute(this.draggableString, (!disable).toString());
         }
     }
     @Output('dndDragStart') public dndDragStart: EventEmitter<any> = new EventEmitter();
@@ -30,21 +30,19 @@ export class DndDraggable implements OnInit, OnDestroy {
     @Output('dndCanceled') public dndCanceled: EventEmitter<any> = new EventEmitter();
     @Output('dndSelected') public dndSelected: EventEmitter<any> = new EventEmitter();
 
-    private dragState: DndStateConfig;
+    private readonly dragState: DndStateConfig;
     private dropSubscription: Subscription;
-    private nativeElement: ElementRef;
     private draggableString: string = 'draggable';
     constructor(
-        private element: ElementRef,
-        private dndState: DndState,
+        private readonly element: ElementRef,
+        private readonly dndState: DndState,
     ) {
         this.dragState = dndState.dragState;
-        this.nativeElement = element.nativeElement;
-        this.nativeElement.nativeElement.setAttribute(this.draggableString, 'true');
+        this.element.nativeElement.setAttribute(this.draggableString, 'true');
         /**
          * Workaround to make element draggable in IE9
          */
-        this.nativeElement.nativeElement.onselectstart = function (): void {
+        this.element.nativeElement.onselectstart = function (): void {
             if (this.dragDrop) this.dragDrop();
         };
     }
@@ -70,7 +68,7 @@ export class DndDraggable implements OnInit, OnDestroy {
     public handleDragStart(event: DragEvent): void {
 
         // disabled check
-        if (this.nativeElement.nativeElement.getAttribute(this.draggableString) === 'false')
+        if (this.element.nativeElement.getAttribute(this.draggableString) === 'false')
             return;
 
         // init drag
@@ -103,17 +101,17 @@ export class DndDraggable implements OnInit, OnDestroy {
         }
 
         // add drag classes
-        this.nativeElement.nativeElement.classList.add('dndDragging');
+        this.element.nativeElement.classList.add('dndDragging');
         setTimeout(
             () => {
                 if (this.dragState.effectAllowed === 'move') {
-                    this.nativeElement.nativeElement.style.display = 'none';
+                    this.element.nativeElement.style.display = 'none';
                 }
             });
 
         // Try setting a proper drag image if triggered on a dnd-handle (won't work in IE).
-        if ((<any>event)._dndHandle && event.dataTransfer.setDragImage) {
-            event.dataTransfer.setDragImage(this.nativeElement.nativeElement, 0, 0);
+        if ((event as any)._dndHandle && event.dataTransfer.setDragImage) {
+            event.dataTransfer.setDragImage(this.element.nativeElement, 0, 0);
         }
 
         this.dndDragStart.emit();
@@ -124,17 +122,17 @@ export class DndDraggable implements OnInit, OnDestroy {
     public handleDragEnd(event: DragEvent): void {
         // Clean up
         this.dragState.isDragging = false;
-        this.nativeElement.nativeElement.classList.remove('dndDragging');
-        this.nativeElement.nativeElement.style.removeProperty('display');
+        this.element.nativeElement.classList.remove('dndDragging');
+        this.element.nativeElement.style.removeProperty('display');
         event.stopPropagation();
         // In IE9 it is possible that the timeout from dragstart triggers after the dragend handler.
-        setTimeout((() => this.nativeElement.nativeElement.classList.remove('dndDraggingSource')), 0);
+        setTimeout((() => this.element.nativeElement.classList.remove('dndDraggingSource')), 0);
     }
 
     @HostListener('click', ['$event'])
     public handleClick(event: Event): void {
 
-        if (this.nativeElement.nativeElement.hasAttribute('dndSelected')) return;
+        if (this.element.nativeElement.hasAttribute('dndSelected')) return;
 
         event = event['originalEvent'] || event;
 

@@ -1,7 +1,6 @@
-import { Directive, Input, Output, ElementRef, HostListener, EventEmitter } from '@angular/core';
+import { Directive, ElementRef, HostListener } from '@angular/core';
 import {
     DndState,
-    DndDraggableConfig,
     DndStateConfig,
 } from '../services';
 @Directive({
@@ -16,17 +15,16 @@ import {
  * the CSS selector .dndDragging:not(.dndDraggingSource) [dnd-handle] for that.
  */
 export class DndHandle {
-    private dragState: DndStateConfig;
+    private readonly dragState: DndStateConfig;
     private nativeElement: HTMLElement;
     private draggableString: string = 'draggable';
     constructor(
-        private element: ElementRef,
-        private dndState: DndState,
+        readonly element: ElementRef,
+        readonly dndState: DndState,
     ) {
         this.dragState = dndState.dragState;
         this.nativeElement = element.nativeElement;
         this.nativeElement.setAttribute(this.draggableString, 'true');
-
     }
 
     @HostListener('dragstart', ['$event'])
