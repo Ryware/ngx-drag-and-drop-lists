@@ -1,6 +1,6 @@
 {
   "name": "ngx-drag-and-drop-lists",
-  "version": "1.3.2",
+  "version": "1.3.3",
   "description": "angular drag and drop component for lists",
   "main": "index.js",
   "scripts": {
