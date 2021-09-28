@@ -1,14 +1,13 @@
 {
   "name": "ngx-drag-and-drop-lists",
-  "version": "1.3.2",
+  "version": "1.3.3",
   "description": "angular drag and drop component for lists",
   "main": "index.js",
   "scripts": {
     "ngc": "ngc",
     "build": "npm run ngc && node ./scripts/copy-package",
     "publishPackage": "npm run build && cd dist && npm publish",
-    "dev": "tsc --watch",
-    "postinstall": "tsc"
+    "dev": "tsc --watch"
   },
   "precommit": [
     "build"
