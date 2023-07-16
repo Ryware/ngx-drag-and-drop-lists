@@ -1,34 +1,41 @@
+/* To learn more about this file see: https://angular.io/config/tsconfig. */
 {
-    "compilerOptions": {
-        "emitDecoratorMetadata": true,
-        "experimentalDecorators": true,
-        "target": "es5",
-        "module": "es2015",
-        "moduleResolution": "node",
-        "removeComments": true,
-        "lib": [
-            "es2015",
-            "dom"
-        ],
-        "sourceMap": true,
-        "outDir": "dist",
-        "declarationDir": "dist",
-        "declaration": true
+  "compileOnSave": false,
+  "compilerOptions": {
+    "baseUrl": "./",
+    "outDir": "./dist/out-tsc",
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "sourceMap": true,
+    "paths": {
+      "my-lib": [
+        "dist/my-lib"
+      ],
+      "ngx-drag-and-drop-lists": [
+        "dist/ngx-drag-and-drop-lists"
+      ]
     },
-    "compileOnSave": true,
-    "include": [
-        "src/**/*"
-    ],
-    "exclude": [
-        "demo",
-        "index.d.ts",
-        "node_modules",
-        "dist"
-    ],
-    "angularCompilerOptions": {
-        "genDir": "dist/",
-        "enableIvy": false,
-        "strictMetadataEmit": true,
-        "skipTemplateCodegen": true
-    }
+    "declaration": false,
+    "downlevelIteration": true,
+    "experimentalDecorators": true,
+    "moduleResolution": "node",
+    "importHelpers": true,
+    "target": "ES2022",
+    "module": "ES2022",
+    "useDefineForClassFields": false,
+    "lib": [
+      "ES2022",
+      "dom"
+    ]
+  },
+  "angularCompilerOptions": {
+    "enableI18nLegacyMessageIdFormat": false,
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true,
+    "strictTemplates": true
+  }
 }

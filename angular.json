@@ -1,0 +1,131 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "ngx-drag-and-drop-lists": {
+      "projectType": "library",
+      "root": "projects/ngx-drag-and-drop-lists",
+      "sourceRoot": "projects/ngx-drag-and-drop-lists/src",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:ng-packagr",
+          "options": {
+            "project": "projects/ngx-drag-and-drop-lists/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "tsConfig": "projects/ngx-drag-and-drop-lists/tsconfig.lib.prod.json"
+            },
+            "development": {
+              "tsConfig": "projects/ngx-drag-and-drop-lists/tsconfig.lib.json"
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "tsConfig": "projects/ngx-drag-and-drop-lists/tsconfig.spec.json",
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ]
+          }
+        }
+      }
+    },
+    "ngx-drag-and-drop-lists-demo": {
+      "projectType": "application",
+      "schematics": {},
+      "root": "projects/ngx-drag-and-drop-lists-demo",
+      "sourceRoot": "projects/ngx-drag-and-drop-lists-demo/src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/ngx-drag-and-drop-lists-demo",
+            "index": "projects/ngx-drag-and-drop-lists-demo/src/index.html",
+            "main": "projects/ngx-drag-and-drop-lists-demo/src/main.ts",
+            "polyfills": [
+              "zone.js"
+            ],
+            "tsConfig": "projects/ngx-drag-and-drop-lists-demo/tsconfig.app.json",
+            "assets": [
+              "projects/ngx-drag-and-drop-lists-demo/src/favicon.ico",
+              "projects/ngx-drag-and-drop-lists-demo/src/assets"
+            ],
+            "styles": [
+              "projects/ngx-drag-and-drop-lists-demo/src/styles.css"
+            ],
+            "scripts": []
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kb",
+                  "maximumError": "1mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "2kb",
+                  "maximumError": "4kb"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "buildOptimizer": false,
+              "optimization": false,
+              "vendorChunk": true,
+              "extractLicenses": false,
+              "sourceMap": true,
+              "namedChunks": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "configurations": {
+            "production": {
+              "browserTarget": "ngx-drag-and-drop-lists-demo:build:production"
+            },
+            "development": {
+              "browserTarget": "ngx-drag-and-drop-lists-demo:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "ngx-drag-and-drop-lists-demo:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "polyfills": [
+              "zone.js",
+              "zone.js/testing"
+            ],
+            "tsConfig": "projects/ngx-drag-and-drop-lists-demo/tsconfig.spec.json",
+            "assets": [
+              "projects/ngx-drag-and-drop-lists-demo/src/favicon.ico",
+              "projects/ngx-drag-and-drop-lists-demo/src/assets"
+            ],
+            "styles": [
+              "projects/ngx-drag-and-drop-lists-demo/src/styles.css"
+            ],
+            "scripts": []
+          }
+        }
+      }
+    }
+  }
+}

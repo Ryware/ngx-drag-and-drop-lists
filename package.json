@@ -1,20 +1,21 @@
 {
   "name": "ngx-drag-and-drop-lists",
-  "version": "1.3.3",
+  "version": "2.0.0",
   "description": "angular drag and drop component for lists",
-  "main": "index.js",
   "scripts": {
-    "ngc": "ngc",
-    "build": "npm run ngc && node ./scripts/copy-package",
-    "publishPackage": "npm run build && cd dist && npm publish",
-    "dev": "tsc --watch"
+    "ng": "ng",
+    "start": "ng serve",
+    "build": "ng build",
+    "watch": "ng build --watch --configuration development",
+    "test": "ng test",
+    "publishPackage": "npm run build && cd dist && npm publish"
   },
   "precommit": [
     "build"
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/misha130/ngx-drag-and-drop-lists.git"
+    "url": "git+https://github.com/ryware/ngx-drag-and-drop-lists.git"
   },
   "keywords": [
     "drag-and-drop",
@@ -23,29 +24,44 @@
     "angular9",
     "alignment"
   ],
-  "author": "Misha Tarnortusky",
+  "author": "Michael Tarnortusky",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/misha130/ngx-drag-and-drop-lists/issues"
+    "url": "https://github.com/ryware/ngx-drag-and-drop-lists/issues"
   },
-  "homepage": "https://github.com/misha130/ngx-drag-and-drop-lists#readme",
-  "dependencies": {},
+  "homepage": "https://github.com/ryware/ngx-drag-and-drop-lists#readme",
+  "dependencies": {
+    "@angular/animations": "^16.1.0",
+    "@angular/common": "^16.1.0",
+    "@angular/compiler": "^16.1.0",
+    "@angular/core": "^16.1.0",
+    "@angular/forms": "^16.1.0",
+    "@angular/platform-browser": "^16.1.0",
+    "@angular/platform-browser-dynamic": "^16.1.0",
+    "@angular/router": "^16.1.0",
+    "rxjs": "~7.8.0",
+    "tslib": "^2.3.0",
+    "zone.js": "~0.13.0"
+  },
   "devDependencies": {
-    "@angular/animations": "~9.1.1",
-    "@angular/common": "~9.1.1",
-    "@angular/compiler": "~9.1.1",
-    "@angular/core": "^9.1.1",
-    "@angular/forms": "~9.1.1",
-    "@angular/platform-browser": "^9.1.1",
-    "@angular/platform-browser-dynamic": "^9.1.1",
-    "@angular/platform-server": "~9.1.1",
-    "@angular/cli": "~9.1.1",
+    "@angular-devkit/build-angular": "^16.1.4",
+    "@angular/cli": "~16.1.4",
+    "@angular/compiler-cli": "^16.1.0",
+    "@types/jasmine": "~4.3.0",
+    "jasmine-core": "~4.6.0",
+    "karma": "~6.4.0",
+    "karma-chrome-launcher": "~3.2.0",
+    "karma-coverage": "~2.2.0",
+    "karma-jasmine": "~5.1.0",
+    "karma-jasmine-html-reporter": "~2.1.0",
+    "typescript": "~5.1.3",
     "connect": "^3.7.0",
+    "ng-packagr": "^16.0.0",
     "serve-static": "^1.14.1",
     "core-js": "^3.6.4",
     "rxjs": "^6.5.5",
     "tslint": "^6.1.1",
-    "typescript": "~3.8.3",
-    "zone.js": "^0.10.3"
+    "zone.js": "^0.13.1",
+    "tslib": "^2.3.0"
   }
 }
