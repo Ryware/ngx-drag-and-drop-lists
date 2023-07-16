@@ -4,6 +4,9 @@ Angular directives that allow you to build sortable lists with the native HTML5 
 
 ### [Demo](https://stackblitz.com/edit/ngx-drag-and-drop-lists/)
 
+### [NPM Package](https://www.npmjs.com/package/@ryware/ngx-drag-and-drop-lists)
+
+`npm install @ryware/ngx-drag-and-drop-lists`
 
 ## Credits to the original creator
     
