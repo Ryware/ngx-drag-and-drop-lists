@@ -1,14 +1,15 @@
 {
-  "name": "ngx-drag-and-drop-lists",
+  "name": "@ryware/ngx-drag-and-drop-lists",
   "version": "2.0.0",
+  "private": false,
   "description": "angular drag and drop component for lists",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
+    "build": "ng build ngx-drag-and-drop-lists",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
-    "publishPackage": "npm run build && cd dist && npm publish"
+    "publish": "npm run build && cd dist/ngx-drag-and-drop-lists && npm publish --access public"
   },
   "precommit": [
     "build"
