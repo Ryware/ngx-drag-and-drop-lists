@@ -10,4 +10,5 @@ export interface DndStateConfig {
     itemType?: string;
     dropEffect: string;
     effectAllowed: Effects;
+    index?: number;
 }

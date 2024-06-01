@@ -1,5 +1,7 @@
-import { Directive, ElementRef, HostListener } from '@angular/core';
-import { DndState, DndStateConfig } from '../services';
+import { Directive, ElementRef, inject } from '@angular/core';
+import { DndState } from '../services';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { fromEvent } from 'rxjs';
 @Directive({
   selector: '[dndHandle]',
 })
@@ -12,27 +14,26 @@ import { DndState, DndStateConfig } from '../services';
  * the CSS selector .dndDragging:not(.dndDraggingSource) [dnd-handle] for that.
  */
 export class DndHandle {
-  private readonly dragState: DndStateConfig;
-  private nativeElement: HTMLElement;
-  private draggableString: string = 'draggable';
-  constructor(readonly element: ElementRef, readonly dndState: DndState) {
-    this.dragState = dndState.dragState;
-    this.nativeElement = element.nativeElement;
+  readonly nativeElement: HTMLElement = inject(ElementRef).nativeElement;
+  readonly dndState: DndState = inject(DndState);
+  private readonly draggableString: string = 'draggable';
+  constructor() {
     this.nativeElement.setAttribute(this.draggableString, 'true');
-  }
 
-  @HostListener('dragstart', ['$event'])
-  public handleDragStart(event: any): void {
-    event = event['originalEvent'] || event;
-    event['_dndHandle'] = true;
-  }
+    fromEvent(this.nativeElement, 'dragstart')
+      .pipe(takeUntilDestroyed())
+      .subscribe((event: any) => {
+        event = event['originalEvent'] || event;
+        event['_dndHandle'] = true;
+      });
 
-  @HostListener('dragend', ['$event'])
-  public handleDragEnd(event: any): void {
-    event = event['originalEvent'] || event;
-
-    if (!event['_dndHandle']) {
-      event.stopPropagation();
-    }
+    fromEvent(this.nativeElement, 'dragend')
+      .pipe(takeUntilDestroyed())
+      .subscribe((event: any) => {
+        event = event['originalEvent'] || event;
+        if (!event['_dndHandle']) {
+          event.stopPropagation();
+        }
+      });
   }
 }
