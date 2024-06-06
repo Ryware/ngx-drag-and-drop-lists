@@ -159,7 +159,14 @@ export class DndList implements OnInit, OnDestroy {
         // Invoke the callback, which can transform the transferredObject and even abort the drop.
         let index: number = this.getPlaceholderIndex();
         // create an offset to account for extra elements (including the placeholder element)
-        let offset: number = this.nativeElement.children.length - 1 - this.dndModel.length;
+        const startIndex = this.dndModel.findIndex((item: any) => {
+          return JSON.stringify(item) === JSON.stringify(data);
+        });
+        let delta = 1;
+        if (this.nativeElement.children.length === this.dndModel.length && index < startIndex) {
+          delta = 0;
+        }
+        let offset: number = this.nativeElement.children.length - delta - this.dndModel.length;
         if (this.dndDrop) {
             this.invokeCallback(this.dndDrop, event, dropEffect, itemType, index, data);
             if (!data) return this.stopDragOver();
