@@ -63,7 +63,7 @@ export class DndDraggable {
      * Workaround to make element draggable in IE9
      */
 
-    dropAccepted.pipe(takeUntilDestroyed()).subscribe(this.handleDropAccepted);
+    dropAccepted.pipe(takeUntilDestroyed()).subscribe(this.handleDropAccepted.bind(this));
 
     fromEvent(this.nativeElement, 'dragstart')
       .pipe(takeUntilDestroyed())
@@ -84,7 +84,7 @@ export class DndDraggable {
 
   public handleDropAccepted({ item, list }: { item: any; list: any }): void {
     // event = event['originalEvent'] || event;
-    if (JSON.stringify(this.dndObject) === JSON.stringify(item)) {
+    if (JSON.stringify(this.dndObject()) === JSON.stringify(item)) {
       let cb: object = {
         copy: 'dndCopied',
         link: 'dndLinked',
@@ -98,6 +98,7 @@ export class DndDraggable {
       this.dndDragEnd.emit();
     }
   }
+
   public handleDragStart(event: DragEvent): void {
     // disabled check
     if (this.nativeElement.getAttribute(this.draggableString) === 'false')
@@ -117,11 +118,11 @@ export class DndDraggable {
       MIME_TYPE +
       (this.dragState.itemType ? '-' + this.dragState.itemType : '');
     try {
-      event.dataTransfer!.setData(mimeType, JSON.stringify(this.dndObject));
+      event.dataTransfer!.setData(mimeType, JSON.stringify(this.dndObject()));
     } catch (e) {
       // Setting a custom MIME type did not work, we are probably in IE or Edge.
       let data: string = JSON.stringify({
-        item: this.dndObject,
+        item: this.dndObject(),
         type: this.dragState.itemType,
       });
       try {
