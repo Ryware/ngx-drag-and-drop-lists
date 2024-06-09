@@ -1,26 +1,15 @@
+import {Directive, ElementRef, inject, input, output, OutputEmitterRef,} from '@angular/core';
+import {fromEvent, Subject} from 'rxjs';
 import {
-  Directive,
-  OnDestroy,
-  OnInit,
-  ElementRef,
-  HostListener,
-  input,
-  output,
-  OutputEmitterRef,
-  inject,
-} from '@angular/core';
-import { fromEvent } from 'rxjs';
-import {
-  DndState,
-  DndListSettings,
-  DndStateConfig,
   ALL_EFFECTS,
-  MIME_TYPE,
+  DndListSettings,
+  DndState,
+  DndStateConfig,
   EDGE_MIME_TYPE,
+  MIME_TYPE,
   MSIE_MIME_TYPE,
 } from '../services';
-import { Subject } from 'rxjs';
-import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import {takeUntilDestroyed} from '@angular/core/rxjs-interop';
 
 export const dropAccepted: Subject<any> = new Subject();
 
@@ -32,10 +21,10 @@ export class DndList {
     {
       disabled: false,
       effectAllowed: 'move',
-      allowedTypes: [],
+      allowedTypes: undefined,
       horizontal: false,
     },
-    { alias: 'dndList' }
+    {alias: 'dndList'}
   );
   dndModel = input<any[]>();
 
@@ -100,7 +89,7 @@ export class DndList {
       while (
         listItemNode.parentNode !== this.nativeElement &&
         listItemNode.parentNode
-      ) {
+        ) {
         listItemNode = listItemNode.parentNode;
       }
 
@@ -114,7 +103,7 @@ export class DndList {
         const rect: ClientRect = (
           listItemNode as Element
         ).getBoundingClientRect();
-        if (this.option && this.option()!.horizontal) {
+        if (this.option() && this.option()!.horizontal) {
           isFirstHalf = event.clientX < rect.left + rect.width / 2;
         } else {
           isFirstHalf = event.clientY < rect.top + rect.height / 2;
@@ -185,8 +174,17 @@ export class DndList {
     // Invoke the callback, which can transform the transferredObject and even abort the drop.
     let index: number = this.getPlaceholderIndex();
     // create an offset to account for extra elements (including the placeholder element)
+    const startIndex = this.dndModel()!.findIndex((item: any) => {
+      return JSON.stringify(item) === JSON.stringify(data);
+    });
+    let delta = 1;
+    if (this.nativeElement.children.length === this.dndModel()!.length && index < startIndex) {
+      delta = 0;
+    }
+    let offset: number = this.nativeElement.children.length - delta - this.dndModel()!.length;
+
     if (this.dndDrop) {
-      data = this.invokeCallback(
+      this.invokeCallback(
         this.dndDrop,
         event,
         dropEffect,
@@ -205,7 +203,11 @@ export class DndList {
 
     // Insert the object into the array, unless dnd-drop took care of that (returned true).
     if (data !== true && this.dndModel()) {
-      this.dndModel()!.splice(index, 0, data);
+      let insertionPoint: number = index - offset;
+      if (insertionPoint < 0) {
+        insertionPoint = 0;
+      }
+      this.dndModel()!.splice(insertionPoint, 0, data);
     }
     this.invokeCallback(
       this.dndInserted,
@@ -217,7 +219,7 @@ export class DndList {
     );
 
     // Tell old object to handle itself
-    dropAccepted.next({ item: data, list: this.dndModel });
+    dropAccepted.next({item: data, list: this.dndModel()});
 
     // Clean up
     this.stopDragOver();
@@ -289,15 +291,15 @@ export class DndList {
    * dnd-allowed-types attribute. If the item Type is unknown (null), the drop will be allowed.
    */
   private isDropAllowed(itemType: string | null | undefined): boolean {
-    if (this.option) {
+    if (this.option()) {
       if (this.option()!.disabled) return false;
-      if (this.option()!.max && this.dndModel.length === this.option()!.max)
+      if (this.option()!.max && this.dndModel()!.length === this.option()!.max)
         return false;
       if (!this.option()!.externalSources && !this.dragState.isDragging)
         return false;
       if (!this.option()!.allowedTypes || itemType === null) return true;
     }
-    return !!itemType && this.option!()!.allowedTypes?.indexOf(itemType) !== -1;
+    return !!itemType && this.option()!.allowedTypes?.indexOf(itemType) !== -1;
   }
 
   /**
@@ -320,7 +322,7 @@ export class DndList {
         this.dragState.effectAllowed
       );
     }
-    if (this.option && this.option()!.effectAllowed) {
+    if (this.option() && this.option()!.effectAllowed) {
       effects = this.dndState.filterEffects(
         effects,
         this.option()!.effectAllowed as string
@@ -369,6 +371,7 @@ export class DndList {
     });
     return true;
   }
+
   /**
    * We use the position of the placeholder node to determine at which position of the array the
    * object needs to be inserted
