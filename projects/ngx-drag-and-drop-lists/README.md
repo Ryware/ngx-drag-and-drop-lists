@@ -2,6 +2,8 @@
 
 This library was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.1.0.
 
+### [Demo](https://stackblitz.com/~/github.com/Ryware/ngx-drag-and-drop-lists?file=package.json&startScript=build,start)
+
 ## Code scaffolding
 
 Run `ng generate component component-name --project ngx-drag-and-drop-lists` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module --project ngx-drag-and-drop-lists`.
