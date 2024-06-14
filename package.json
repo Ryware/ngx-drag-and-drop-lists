@@ -1,6 +1,6 @@
 {
   "name": "@ryware/ngx-drag-and-drop-lists",
-  "version": "2.0.3",
+  "version": "3.1.0",
   "private": false,
   "description": "angular drag and drop component for lists",
   "scripts": {
