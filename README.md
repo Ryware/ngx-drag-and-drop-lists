@@ -10,6 +10,14 @@ This library was generated with [Angular CLI](https://github.com/angular/angular
 
 `npm install @ryware/ngx-drag-and-drop-lists`
 
+### Angular Versions
+
+| Version  | Second Header |
+| ------------- | ------------- |
+| Angular 18+  | [3.1.0](https://www.npmjs.com/package/@ryware/ngx-drag-and-drop-lists/v/3.1.0)  |
+| Angular 17  | [3.0.2](https://www.npmjs.com/package/@ryware/ngx-drag-and-drop-lists/v/3.0.2)  |
+| Angular 16 <=  | [2.1.1](https://www.npmjs.com/package/@ryware/ngx-drag-and-drop-lists/v/2.1.1)  |
+
 ## Credits to the original creator
     
 This library is inspired by the https://github.com/marceljuenemann/angular-drag-and-drop-lists library which was written in AngularJS.
